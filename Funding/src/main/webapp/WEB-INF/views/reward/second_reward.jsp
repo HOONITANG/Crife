@@ -5,14 +5,15 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/script.jsp"%>
+<link rel="stylesheet" href="${path}/resources/reward/parsley.css">
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 </head>
 <body>
-        <!--멤버 나중에 받아야함.  -->
-        
-<form role="form" method="post" action="${path}/order/reservation">
-		<input type="hidden" name="mem_idx" value="2">
+
+<form role="form"  method="post" action="${path}/order/reservation/${pro_id}">
+
 <table>
 	<!--tr아래에 선언해야 total이 0으로 초기화가 되지 않음.  -->
 	<c:set var="total" value="0" />
@@ -28,7 +29,6 @@
 				<td>
 				<input type="hidden"  class="select_count" value="${reward2.reward_id}">
 				<input type="hidden"  id="qty${reward2.reward_id}" value="${reward2.qty}">
-				<input type="hidden"  id="pro_id${reward2.reward_id}" value="${reward2.pro_id}">
 				</td>
 				<td>${reward2.reward_id}</td>
 				<td>${reward2.reward_title}</td>
@@ -58,9 +58,9 @@
 주소 : <input type="text" value="${orderInfo.order_address_all}" readOnly>  
 <p>-----------------------------------------------------------------------</p>
 <p>새로운 주소지</p>
-이름 : <input type="text" name="order_name" id="order_name_js"> 	
-전화번호 : <input type="text" name="order_phone" id="order_phone_js"> 
-이메일 : <input type="text" name="order_email" id="order_phone_js"> 
+이름 : <input type="text" name="order_name" id="order_name_js" data-parsley-length="[2, 10]" required=""> 	
+전화번호 : <input type="number" name="order_phone" id="order_phone_js" required=""> 
+이메일 : <input type="email" name="order_email" id="order_phone_js" data-parsley-trigger="change" required=""> 
 <br><br>	
 
 <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" class="d_btn">
@@ -69,35 +69,44 @@
 <input type="hidden" name="order_address2" id="sample4_roadAddress"  placeholder="도로명주소">
 <input type="hidden" name="order_address3" id="sample4_jibunAddress"  placeholder="지번주소">
 
-<textarea id="home_address" rows="2" cols="30" readonly></textarea> 
+<textarea id="home_address" rows="2" cols="30" required="" readonly></textarea> 
 <br>
-<input type="text" name="order_address4" id="order_address4" class="d_form" placeholder="상세주소">
+<input type="text" name="order_address4" id="order_address4" class="d_form" placeholder="상세주소" required="">
 
 <br>
 <br>
-<input id="rbtn" type="button" value="결제예약하기"/>
+<input id="rbtn" type="submit" value="결제예약하기"/>
 </form>
 </body>
+<script src="${path}/resources/reward/parsley.min.js"></script>
+<script src="${path}/resources/reward/pasley.ko.js"></script>
 
 <script>
 $(document).ready(function() {
+	
 	/*  method="post" action="${path}/order/reservation"  */
  	var formObj = $("form[role='form']");
+	// validate 라이브러리 사용
+ 	//formObj.parsley();
 	console.log(formObj);
-	$("#rbtn").on("click", function() {
-		rewardNextStep();
-		formObj.submit();
-	});
+	
+	formObj.parsley().on('field:validated', function() {
+	    var ok = $('.parsley-error').length === 0;
+	    $('.bs-callout-info').toggleClass('hidden', !ok);
+	    $('.bs-callout-warning').toggleClass('hidden', ok);
+	 })
+	 .on('form:submit', function() {
+		 rewardNextStep();
+   		 return true; //  submit form for this demo
+ 	 });
 	
 	function rewardNextStep() {
         $('.select_count').each(function(idx) {
             var rewardId = $(this).val();
             var qty = $('#qty' + rewardId).val();
-   		    var pro_id = $('#pro_id' + rewardId).val();
 			// 한번에 저장하기 위해 name을 배열로 전달한다. 
             $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].reward_id" value="' + rewardId + '" />');
             $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].order_count" value="' + qty + '" />');
-            $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].pro_id" value="' + pro_id + '" />');
         });
     }
 });

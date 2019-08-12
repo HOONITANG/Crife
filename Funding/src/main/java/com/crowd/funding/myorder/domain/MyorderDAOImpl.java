@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.crowd.funding.member.model.MemberDTO;
-import com.crowd.funding.myorder.common.MyorderDTOJoin;
+import com.crowd.funding.myorder.common.JoinDATA;
 import com.crowd.funding.order.domain.OrderDTO;
 import com.crowd.funding.project.model.ProjectDTO;
 import com.crowd.funding.reward.domain.RewardDTO;
@@ -22,7 +22,7 @@ public class MyorderDAOImpl implements MyorderDAO {
 	SqlSession sqlSession;
 	
 	@Override
-	public List<MyorderDTOJoin> orderList(int mem_idx) {
+	public List<JoinDATA> orderList(int mem_idx) {
 		return sqlSession.selectList(NAMESPACE+".my_order_list", mem_idx);
 	}
 

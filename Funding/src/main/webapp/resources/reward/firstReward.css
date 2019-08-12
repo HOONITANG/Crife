@@ -1,0 +1,13 @@
+@charset "EUC-KR";
+
+.number {
+	visibility: hidden;
+
+}
+
+.showing {
+    padding: 0px;
+    margin: 0px;
+    color: red;
+    visibility: visible;
+}

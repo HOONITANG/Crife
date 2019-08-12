@@ -12,7 +12,8 @@
 </head>
 <body>
 <form>
-<input type="button" value="나의 리워드">
+<a href="${path}/mypage/myorder/orderlist">나의 리워드</a>
+
 <h2>주문정보</h2>
 <p> 주문번호: ${orderinfo.order_id} </p>
 <p> 주문날짜: ${orderinfo.order_date} </p>

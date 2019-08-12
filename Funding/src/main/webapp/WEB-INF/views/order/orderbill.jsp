@@ -12,8 +12,7 @@
 </head>
 <body>
 <form method="get">
-<input type="hidden" name="mem_idx" value="2">
-<a href="${path}/mypage/myorder/orderlist?pro_id=2">결제내역으로 이동하기</a>
+<a href="${path}/mypage/myorder/orderdetail/${order_id}">결제내역으로 이동하기</a>
 </form>
 </body>
 </html>

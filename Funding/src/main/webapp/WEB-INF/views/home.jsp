@@ -87,8 +87,6 @@
 		</div>
 		</div>
 	</c:forEach>
-
-	
 	<div class="card" style="width: 18rem;">
 	  <img src="images/ryan.jpg" class="card-img-top" alt="ryan">
 	  <div class="card-body">
@@ -98,21 +96,6 @@
 	  </div>
 	</div>
 	
-	<button type="button" id="fbtn">펀딩하기</button>
-	<form role="form" id="send_pro_id" method="get"
-		action="${path}/reward/step10">
-		<!--<input type="hidden" value="${project.pro_id}">  -->
-		<input type="hidden" name="pro_id" value="2">
-	</form>
-	<script>
-		$(document).ready(function() {
-			var formObj = $("form[role='form']");
-			console.log(formObj);
-			$("#fbtn").on("click", function() {
-				formObj.submit();
-			});
-		});
-	</script>
 	<hr>
 </body>
 </html>

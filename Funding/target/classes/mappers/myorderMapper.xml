@@ -18,7 +18,7 @@
 </select>
 <!-- 현재 로그인한 회원이 리워드한 프로젝트 리스트  -->
 <!-- 하나만 보여주기  -->
-<select id="my_order_list" resultType="com.crowd.funding.myorder.common.MyorderDTOJoin">
+<select id="my_order_list" resultType="com.crowd.funding.myorder.common.JoinDATA">
 	SELECT t1.pro_name, t1.pro_category,  t3.mem_name, t2.order_id
 	FROM project as t1, 
 	(select * from myorder group by order_id) as t2, 
@@ -27,15 +27,6 @@
 	order by t2.order_id desc
 </select>
 
-<!--구매이력에서 선택한 상품 주문정보를 검색 -->
-<!-- <select id="order_info" resultType="com.crowd.funding.myorder.common.MyorderDTOJoin">
-	SELECT mo.order_id, mo.order_date, mo.payment_yn, pro.pro_end, pro.pro_name, mem.mem_name, ro.order_name,
-	ro.order_phone, ro.order_requests, ro.order_status, ro.order_address1, ro.order_address3, ro.order_address4
-	FROM myorder as mo, project as pro, member as mem, reward_order as ro
-	WHERE mo.pro_id = pro.pro_id AND pro.mem_idx = mem.mem_idx AND mo.order_id = ro.order_id
-	AND mo.order_id = #{order_id}
-	group by order_id;
-</select> -->
 <!--위의 내용을 분해한 것 -->
 <select id="order_info" parameterType="int" resultType="com.crowd.funding.myorder.domain.MyorderDTO">
 	SELECT mo.order_id, mo.order_date

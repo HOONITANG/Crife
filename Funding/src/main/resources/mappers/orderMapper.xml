@@ -24,7 +24,7 @@
 	<insert id = "order_insert" useGeneratedKeys="true" keyProperty="order_id">
 		INSERT INTO  
 		REWARD_ORDER (mem_idx, order_email, order_name, order_phone, order_address1,order_address2,order_address3,order_address4)
-		VALUES (2,#{order_email},#{order_name},#{order_phone},#{order_address1},#{order_address2},#{order_address3},#{order_address4});
+		VALUES (#{mem_idx},#{order_email},#{order_name},#{order_phone},#{order_address1},#{order_address2},#{order_address3},#{order_address4});
 	</insert>
 	
 	<!--order에 저장한 후 myorder에도 저장하는데 다수 DTO 저장  -->
@@ -32,7 +32,7 @@
 		INSERT INTO myorder (mem_idx, pro_id, reward_id, order_count, order_id, order_date) 
 		VALUES 
 		<foreach separator="," item="item" collection="list">
-           (2,2,#{item.reward_id},#{item.order_count},#{item.order_id},now())
+           (#{item.mem_idx},#{item.pro_id},#{item.reward_id},#{item.order_count},#{item.order_id},now())
         </foreach>
 	</insert>
 	

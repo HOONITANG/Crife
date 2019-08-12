@@ -6,7 +6,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/script.jsp"%>
-<link rel="stylesheet" href="${path}/resources/order/order.css">
+<link rel="stylesheet" href="${path}/resources/reward/firstReward.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -14,9 +14,8 @@
 </head>
 <body>
 	<form role="form" id="send_to_reward20" method="post"
-		action="${path}/reward/step20">
+		action="${path}/reward/step20/${pro_id}">
 		<!--멤버 나중에 받아야함.  -->
-		<input type="hidden" name="mem_idx" value="2">
 		<!-- 다른 페이지에서 받아올 값이다.  -->
 		<%-- <input type="hidden" name="mem_idx" value="${member.mem_idx}">
 	    <input type="hidden" name="pro_id" value="${project.pro_id}"> --%>
@@ -37,8 +36,10 @@
 					value="${reward.reward_sell_count}">
 				<input type="hidden" id="reward_price${reward.reward_id}"
 					value="${reward.reward_price}">
+					
 				<input type="hidden" id="reward_remain_count${reward.reward_id}"
-					value="${reward.remain_count}">
+					value="${reward.reward_sell_count - reward.order_qty}">
+					
 				<input type="hidden" name="list[${status.index}].reward_title" value="${reward.reward_title}">
 				<tr>
 					<td>${reward.pro_id}</td>
@@ -47,7 +48,7 @@
 					<td>${reward.reward_title}</td>
 					<td><fmt:formatNumber pattern="###,###,###" value="${reward.reward_price}" />원</td>
 					<td>${reward.reward_sell_count}</td>
-					<td>${reward.remain_count}</td>
+					<td>${reward.reward_sell_count - reward.order_qty}</td>
 					<td><input type="checkbox" name="check_box" id="check_box"
 						value="${reward.reward_id}" class="check_box_js"
 						data-toggle="checkbox" ></td>

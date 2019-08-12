@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.crowd.funding.member.model.MemberDTO;
-import com.crowd.funding.myorder.common.MyorderDTOJoin;
+import com.crowd.funding.myorder.common.JoinDATA;
 import com.crowd.funding.myorder.domain.MyorderDAO;
 import com.crowd.funding.myorder.domain.MyorderDTO;
 import com.crowd.funding.order.domain.OrderDTO;
@@ -21,7 +21,7 @@ public class MyorderServiceImpl implements MyorderService {
 	MyorderDAO myorderDAO;
 
 	@Override
-	public List<MyorderDTOJoin> orderList(int mem_idx) {
+	public List<JoinDATA> orderList(int mem_idx) {
 		return myorderDAO.orderList(mem_idx);
 	}
 
