@@ -31,6 +31,7 @@ public class OrderController {
 	public String orderInsert(Model model, OrderDTO orderDTO, @PathVariable("pro_id") int pro_id, 
 			MyorderDTO myorderDTO, RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
 		System.out.println("reservation 동작체크");
+		System.out.println("orderDTO phone value:"+"'"+orderDTO.getOrder_phone()+"'");
 		MemberDTO memDTO = (MemberDTO) session.getAttribute("login");
 		int memIdx = memDTO.getMem_idx();
 		orderDTO.setMem_idx(memIdx);

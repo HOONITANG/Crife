@@ -24,6 +24,11 @@ public class FirstDATA {
 	public void setAddDonation(int addDonation) {
 		this.addDonation = addDonation;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "FirstDATA [addDonation=" + addDonation + ", list=" + list + "]";
+	}
+		
 
 }

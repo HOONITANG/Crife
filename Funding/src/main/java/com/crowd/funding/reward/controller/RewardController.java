@@ -1,5 +1,8 @@
 package com.crowd.funding.reward.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -9,10 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.order.service.OrderService;
+import com.crowd.funding.project.service.ProjectService;
 import com.crowd.funding.reward.common.FirstDATA;
 import com.crowd.funding.reward.service.RewardService;
 
@@ -24,6 +31,10 @@ public class RewardController {
 	RewardService rewardService;
 	@Inject
 	OrderService orderService;
+	
+	//reward_input test중
+	@Inject
+	ProjectService projectService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 	
@@ -54,4 +65,24 @@ public class RewardController {
 		//model.addAttribute("rewardSel", rewardService.rewardSel(reward_id));		
 		return "/reward/second_reward";
 	}
+	
+	//Ajax 통신 
+	//test 중 project로 옮겨야함
+		@RequestMapping(value="/rewardInput", method = RequestMethod.POST)
+		@ResponseBody
+		public Map insertReward(@RequestBody FirstDATA Firstdata) throws Exception {
+			System.out.println("rewardInput_test");
+			System.out.println("Firstdata >>"+Firstdata);
+			if (Firstdata != null) 
+				projectService.insertReward(Firstdata.getList());
+			Map result = new HashMap();
+			result.put("result", Boolean.TRUE);
+			return result;
+		}
+		@RequestMapping(value = "/rewardInput", method = RequestMethod.GET)
+		public String home(Model model) throws Exception {
+
+			return "project/reward_input";
+			//return "home";
+		}
 }

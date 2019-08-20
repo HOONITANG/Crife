@@ -55,7 +55,7 @@ p {
 					<li class="nav-item"><a class="nav-link active"
 						data-toggle="tab" href="#basic">기본정보</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#asd">리워드</a></li>
+						href="#reword">리워드</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
 						href="#story">스토리</a></li>
 					<li class="nav-item"><a class="nav-link" data-toggle="tab"
@@ -150,10 +150,18 @@ p {
 		</table>
 	</form></p>
 					</div>
-					<div class="tab-pane fade" id="asd">
-						<p>Nunc vitae turpis id nibh sodales commodo et non augue.
-							Proin fringilla ex nunc. Integer tincidunt risus ut facilisis
-							tristique.</p>
+					<div class="tab-pane fade" id="reward">
+						<p>
+						******************************************
+						*********************************************
+						*********************************************
+						이곳에 작성하면됩니다.
+						*********************************************
+						*********************************************
+						**********************************************	
+						</p>
+							
+							
 					</div>
 					<div class="tab-pane fade" id="story">
 						<p>

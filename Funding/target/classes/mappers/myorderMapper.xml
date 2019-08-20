@@ -43,7 +43,7 @@
 <select id="mem_info" parameterType="int" resultType="memberDto">
 	SELECT mem.mem_name
 	FROM project as pro, myorder as mo, member as mem
-	WHERE pro.pro_id = mem.mem_idx AND pro.pro_id = mo.pro_id AND mo.order_id = #{order_id}
+	WHERE pro.mem_idx = mem.mem_idx AND pro.pro_id = mo.pro_id AND mo.order_id = #{order_id}
 	limit 1
 </select>
 <select id="shipment_info" parameterType="int" resultType="com.crowd.funding.order.domain.OrderDTO">

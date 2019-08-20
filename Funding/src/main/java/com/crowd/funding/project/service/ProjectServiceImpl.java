@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.crowd.funding.project.model.ProjectDAO;
 import com.crowd.funding.project.model.ProjectDTO;
+import com.crowd.funding.reward.common.FirstDATA;
+import com.crowd.funding.reward.domain.RewardDTO;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -62,5 +64,11 @@ public class ProjectServiceImpl implements ProjectService {
 	public void story_update(ProjectDTO dto) {
 		projectDao.story_update(dto);
 	}
+	//리워드 입력받기
 
+	@Override
+	public void insertReward(List<RewardDTO> list) {
+		projectDao.insertReward(list);
+	}
+	
 }

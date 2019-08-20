@@ -3,6 +3,8 @@ package com.crowd.funding.project.service;
 import java.util.List;
 
 import com.crowd.funding.project.model.ProjectDTO;
+import com.crowd.funding.reward.common.FirstDATA;
+import com.crowd.funding.reward.domain.RewardDTO;
 
 public interface ProjectService {
 	List<ProjectDTO> listProject();
@@ -14,4 +16,5 @@ public interface ProjectService {
 	List<ProjectDTO> my_pro(int mem_idx);
 	void my_delete(int pro_id);
 	void story_update(ProjectDTO dto);
+	void insertReward(List<RewardDTO> list);
 }

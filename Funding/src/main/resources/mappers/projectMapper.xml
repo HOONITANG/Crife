@@ -50,4 +50,17 @@
 		 	pro_summary=#{pro_summary}, pro_content=#{pro_content}
 		where pro_id=#{pro_id} limit 1
 	</update>
+	
+	<!--rewad 다수 DTO 저장  -->
+	<insert id ="reward_insert">
+		INSERT INTO reward_item (pro_id, mem_idx, reward_title, reward_price, reward_sell_count,
+		reward_option_detail, shipment_start, delivery_fee, reward_description) 
+		VALUES 
+		<foreach separator="," item="item" collection="list">
+           (2,4,#{item.reward_title},#{item.reward_price},
+           #{item.reward_sell_count},#{item.reward_option_detail},#{item.shipment_start},
+           #{item.delivery_fee},#{item.reward_description})
+        </foreach>
+	</insert>
+	
 </mapper>

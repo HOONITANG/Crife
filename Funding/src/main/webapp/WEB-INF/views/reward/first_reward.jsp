@@ -5,85 +5,131 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!--jquery3.3.1 script 추가  -->
 <%@ include file="/WEB-INF/views/include/script.jsp"%>
-<link rel="stylesheet" href="${path}/resources/reward/firstReward.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!--체크 박스 클릭 시 적용 css -->
+<link rel="stylesheet" href="${path}/resources/reward/firstReward.css">
+
+<!--font awesome-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- bootstrap 적용 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<style>
+	.bd-placeholder-img {
+	    font-size: 1.125rem;
+	    text-anchor: middle;
+	    -webkit-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	}
+	
+	@media (min-width: 768px) {
+	    .bd-placeholder-img-lg {
+	        font-size: 3.5rem;
+	    }
+	}
+</style>
+
 <title>리워드 step10 화면입니다.</title>
+
 </head>
 <body>
+<div class="container">
+	<div class="py-5 text-center">
+	    <h2>주문페이지 입니다.</h2>
+	    <p class="lead">자바스크립트를 통해 체크 박스를 통해 선택한 리워드의 수량 입력창을 추가하고 남은 갯수을 넘기거나, 500개 이상, 1개미만 유효성 처리를 하였습니다. 
+	    다음 페이지를 클릭 했을 시 선택한 리워드들을 합산한 금액, 수량, 상품번호를 값을 전달하기위해 자바스크립트를 사용하여 form태그에 추가하였습니다.</p>
+    </div>
+	
 	<form role="form" id="send_to_reward20" method="post"
 		action="${path}/reward/step20/${pro_id}">
-		<!--멤버 나중에 받아야함.  -->
-		<!-- 다른 페이지에서 받아올 값이다.  -->
-		<%-- <input type="hidden" name="mem_idx" value="${member.mem_idx}">
-	    <input type="hidden" name="pro_id" value="${project.pro_id}"> --%>
-		<table class="reward_list" id="reward_list">
-			<tr>
-				<td>프번</td>
-				<td>리번</td>
-				<td>멤번</td>
-				<td>리제목</td>
-				<td>리가격</td>
-				<td>리판매제한</td>
-				<td>리남은갯수</td>
-			</tr>
-	
-			<c:forEach items="${rewards}" var="reward" varStatus="status">
-				<!-- 값은 안넘기지만 유효성 검사나 현재페이지에 보여지기 위해 생성한 input type들 입니다.  -->
-				<input type="hidden" id="reward_sell_count${reward.reward_id}"
-					value="${reward.reward_sell_count}">
-				<input type="hidden" id="reward_price${reward.reward_id}"
-					value="${reward.reward_price}">
-					
-				<input type="hidden" id="reward_remain_count${reward.reward_id}"
-					value="${reward.reward_sell_count - reward.order_qty}">
-					
-				<input type="hidden" name="list[${status.index}].reward_title" value="${reward.reward_title}">
-				<tr>
-					<td>${reward.pro_id}</td>
-					<td>${reward.reward_id}</td>
-					<td>${reward.mem_idx}</td>
-					<td>${reward.reward_title}</td>
-					<td><fmt:formatNumber pattern="###,###,###" value="${reward.reward_price}" />원</td>
-					<td>${reward.reward_sell_count}</td>
-					<td>${reward.reward_sell_count - reward.order_qty}</td>
-					<td><input type="checkbox" name="check_box" id="check_box"
-						value="${reward.reward_id}" class="check_box_js"
-						data-toggle="checkbox" ></td>
-					<td class="number"><input type="text" name="before_qty"
-						id="qty${reward.reward_id}" class="before_qty" value="0">
-						<a href="#" class="increaseQuantity">수량 올림</a> <a href="#"
-						class="decreaseQuantity">수량 내림</a></td>
-				</tr>
-			</c:forEach>
-
-		</table>
-		후원금 더하기 : 
-		<input type="hidden" id="addDonation" name="addDonation" value="0">
-		<input type="text" id="addDonationTmp" value=0  name="sub_money" maxlength="8">
-		<table>
-			<tr>
-				<td>이름비공개 : <input type="checkbox" id="dontShowNameYn"
-					name="dontShowNameYn" value="N"></td>
-				<td>펀딩금액 비공개 : <input type="checkbox" id="dontShowAmountYn"
-					name="dontShowAmountYn" value="N"></td>
-			</tr>
-		</table>
-		<p id="sumTotalNum">0</p>
-		<button type="button" id="nextButton">다음 단계로</button>
-
-	</form>
-
-	<!-- int reward_id; //order_reward_T의 키 값
- 	 int pro_id; // project_T의 키 값
-	 int mem_id; // member_T의 키값
-	 String reward_title; // 리워드 상품 이름
-	 int reward_price; // 리워드 개당 금액
-	 int reward_sell_count; // 판매가능 갯수 -->
+		<div class="row">	
+			<div class="col-sm-10 order-md-1 mb-3" style="margin: 0 auto;">
+				<h4 class="d-flex justify-content-between align-items-center mb-3">
+					<span class="text-muted">리워드 선택</span>
+				</h4>	
+				<ul class="list-group mb-3 reward_list " id="reward_list">
+					<c:forEach items="${rewards}" var="reward" varStatus="status">
+						<!-- 값은 안넘기지만 유효성 검사나 현재페이지에 보여지기 위해 생성한 input type들 입니다.  -->			
+						<input type="hidden" id="reward_sell_count${reward.reward_id}" value="${reward.reward_sell_count}">
+						<input type="hidden" id="reward_price${reward.reward_id}" value="${reward.reward_price}">							
+						<input type="hidden" id="reward_remain_count${reward.reward_id}" value="${reward.reward_sell_count - reward.order_qty}">							
+						<input type="hidden" name="list[${status.index}].reward_title" value="${reward.reward_title}">
+						<li class="list-group-item d-flex justify-content-between lh-condensed">
+	                        <div>
+	                            <h6 class="my-0">${reward.reward_title}</h6>
+	                            <small class="text-muted">${reward.reward_description}</small>
+		                        <p class="text-muted">남은 수량: ${reward.reward_sell_count - reward.order_qty} </p>
+		                       	<div class="list_wrap row">
+		                       		<div class="col-lg-5 mb-3">
+			                        <span class="text-muted"><fmt:formatNumber pattern="###,###,###" value="${reward.reward_price}" />원</span>
+				                    <span><input type="checkbox" name="check_box" id="check_box${reward.reward_id}"
+											value="${reward.reward_id}" class="check_box_js"
+											data-toggle="checkbox" >
+									</span>
+									</div>
+									<div class="col-lg-5 mb-3">
+									<span class="number" id="number${reward.reward_id}">
+										<i class="fa fa-minus-square decreaseQuantity"  aria-hidden="true"></i>
+										<input type="text" name="before_qty" id="qty${reward.reward_id}" class="before_qty text-center" value="0">
+										<i class="fa fa-plus-square increaseQuantity" aria-hidden="true"></i>						
+									</span>
+									</div>
+								</div>
+							</div>
+	                   	</li>
+					</c:forEach>
+				</ul>
+			</div>
+		</div>
+		<!--row-->	
+		<div class="row ">
+			<div class="col-sm-10 order-md-1 mb-3" style="margin: 0 auto;">
+				<hr class="mb-4">
+	               <h4 class="mb-3">Payment</h4>
+	               <div class="mb-3">
+	                <span class="text-muted">후원금 </span>
+	                <input type="text" class="form-control col-md-5" id="addDonationTmp" value=0  name="sub_money" maxlength="8">
+	               </div>
+	               <input type="hidden" id="addDonation" name="addDonation" value="0">				
+				<hr class="mb-4">
+	               <div class="custom-control custom-checkbox">
+	                   <input type="checkbox" class="custom-control-input" id="dontShowNameYn" name="dontShowNameYn" value="N">
+	                   <label class="custom-control-label" for="dontShowNameYn">이름비공개</label>
+	               </div>
+	               <div class="custom-control custom-checkbox">
+	                   <input type="checkbox" class="custom-control-input" id="dontShowAmountYn" name="dontShowAmountYn" value="N">
+	                   <label class="custom-control-label" for="dontShowAmountYn">펀딩금액 비공개</label>
+	               </div>
+	               <hr class="mb-4">
+				<div>
+	                <span>Total</span>
+	                <strong id="sumTotalNum"> 0</strong>
+	               </div>
+				<button type="button" id="nextButton" class="btn btn-primary btn-lg btn-block">다음단계로</button>
+			</div>
+		</div>
+		<!-- row  -->
+	</form>		
+</div>
+<!--container  -->
 <script>
-// 수량 감소 증가 
 $(function() {
     const SHOWING_ON = "showing";
     var firstform = $("form[role='form']");
@@ -173,36 +219,22 @@ $(function() {
     // check 박스 체크 이벤트 처리
     $(document).on("change", ".check_box_js", function(e) {
         e.preventDefault();
-        var tr = $(e.target.parentNode).parent(); //tr 을 가리키게됨.
-        var qty = tr.children('.number');
-        // var createNum = $(this).parent().parent(); // 바로위면 td 인데 tr아래에 추가해야하기 때문에 부모의 상위객체를 찾아감
-        // var reward_id = $(this).val();
-
-        //var check = checkbox.children(".check_box_js");
-        // 동적 html 태그 생성 처리
-        // 옵션에 활용하자.
-        if ($(this).is(":checked")) {
-            qtyShow(qty);
-            qty.children(".before_qty").val(1);
-            // 동적으로 생성할 html 태그를 입력
-            // 부모인 checkbox = "reward_list" 밑에 생성함
-            /*  var newRow = jQuery(`<td class="number"><div> 
-            <input type="text" name="order_count" id="qty"+reward_id class="order_count" value="1"> 
-            <a href="#" class="increaseQuantity">수량 올림</a> 
-            <a href="#" class="decreaseQuantity">수량 내림</a> 
-            </div></td>
-            `); 
-            
-            createNum.append(newRow);
-            console.log(createNum);*/
-        } else {
-            qty.children(".before_qty").val(0);
-            qtyHidden(qty);
-            //createNum.children("td.number").remove('td.number');  
-        }
+        $('.check_box_js').each(function(idx) { 
+        	var rewardId = $(this).val();
+        	var qty = $('#number'+rewardId);
+        	console.log(qty);
+        	if ($(this).is(":checked")) {
+                qtyShow(qty);
+                qty.children(".before_qty").val(1);
+            } else {
+                qty.children(".before_qty").val(0);
+                qtyHidden(qty);
+            }
+        });    
         calculateTotal();
     });
 
+ 	// 수량 감소 증가 
     // 수량 감소 이벤트
     $(document).on("click", ".decreaseQuantity", function(e) {
         e.preventDefault();
@@ -227,7 +259,7 @@ $(function() {
         btn.children('.before_qty').val(num);
         countValidation(rewardId, num);
         calculateTotal();
-        $(e.target.parentNode).children('.option')[0].remove();
+        $(e.target.parentNode).parent().children('.option')[0].remove();
 
     });
 
@@ -247,7 +279,7 @@ $(function() {
         btn.children('.before_qty').val(num);
         countValidation(rewardId, num);
         calculateTotal();
-        $(e.target.parentNode).append(
+        $(e.target.parentNode).parent().append(
         		`<div class='option'>
         		<select name="rewardOptions" id="memo" onchange="optionChanged(this)">
                 <option value="블랙">화이트</option>
