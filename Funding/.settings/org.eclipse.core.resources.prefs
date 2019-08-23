@@ -1,10 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/crowd/funding/interceptor=UTF-8
-encoding//src/main/java/com/crowd/funding/maker/controller=UTF-8
-encoding//src/main/java/com/crowd/funding/maker/controller/MakerController.java=UTF-8
-encoding//src/main/java/com/crowd/funding/maker/model=UTF-8
-encoding//src/main/java/com/crowd/funding/maker/model/MakerDAOImpl.java=UTF-8
-encoding//src/main/java/com/crowd/funding/maker/service=UTF-8
 encoding//src/main/java/com/crowd/funding/member=UTF-8
 encoding//src/main/java/com/crowd/funding/member/service/MemberServiceImpl.java=UTF-8
 encoding//src/main/java/com/crowd/funding/myorder/common=UTF-8

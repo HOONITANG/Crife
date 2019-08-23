@@ -5,8 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/views/include/script.jsp"%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -26,69 +24,6 @@
 </style>
 </head>
 <body>
-	
-	 <!-- <form id="form-main" role="form">
-     	<div id="form-block">
-       		<div id="form-group">
-		    <p>리워드 #1?</p>
-		    <p>금액 <input type="text" name="list[0][reward_price]"></p>
-		    <p>정렬 순서 <input type="text"></p>
-		    <p>리워드 명 <input type="text" name="list[0][reward_title]"></p>
-		    <p>상세설명 <input type="text" name="list[0][reward_description]"></p>
-		    <p>옵션 조건</p>
-		         <div>
-		            <label>
-		                <input type="radio" name="option" value="0">
-		                <span>옵션입력이 필요없는 리워드입니다.</span>
-		            </label>
-		        </div>
-		        <div>
-		            <label>
-		                <input type="radio" name="option" value="1"/>
-		                <span>직접 입력 옵션이 필요한 리워드입니다. (각인, 메시지 등)</span>
-		                <div class="option_js">
-		                    <p id="optionDetail-hint" class="input-hint">
-		                        <samp>
-		                  		          예시: 한글 10자, 영문 15자 이내 각인 메시지를 입력하세요. 
-		                  		          각인 메시지를 입력하세요.
-		                        </samp>
-		                    </p>
-		                    <input type="text" name="option_detail">
-		                </div>
-		            </label>
-		        </div>
-		        <div>
-		            <label>
-		                <input type="radio" name="option" value="2">
-		                <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-		                <div class="option_js">
-		                    <p id="optionDetail-hint" class="input-hint">
-		                        	옵션 값을 입력하세요. 옵션 값은 엔터로 구분됩니다.
-		                        <samp>
-		                        	예시: 블랙, 230mm 화이트, 240mm
-		                        </samp>
-		                    </p>
-		                    <textarea name="option_detail" id="option_input" style="width: 447px; padding: 10px 0px 0px 10px; font-size: 14px; overflow-y: hidden; resize: none;" maxlength="1500" title="옵션조건"></textarea>
-		                    <p>미리보기
-		                        <select name="option_view" id="option_view_js">
-		                            <option value="">옵션선택</option>
-		                        </select>
-		                    </p>
-		                </div>
-		            </label>
-		        </div> 
-		        <p>배송료 <input type="number" name="list[0][delivery_fee]">원</p>
-		        <p>제한수량</p>
-		            <span> 리워드를 <input type="number" name="list[0][reward_sell_count]">개로 제한합니다.</span>
-		        <p>
-		            <span>발송시작일</span>
-		            <input type="text" name="list[0][shipment_start]">
-		        </p>
-		        </div>
-	        </div>
-	        <input type="button" class="btn ins-btn" value="저장하기" />
-        </form> -->
-    <!--template추가  -->
     <div id="section7">
         <h1>Ex7 노드복제와 템플릿 태그</h1>
         <div>
@@ -213,29 +148,25 @@
 		
             function to_ajax() {
             	//const serializedValues2 = $('form[role="form"]').serializeObject();
-            	// Json 값 삽입
-            	 const serializedValues2 = createInputJson();
             	//const serializedValues2 = $('form[role="form"]').serializeJSON();
             	//const serializedValues2 = $('form[role="form"]').serialize();
+            	// Json 값 삽입
+            	 const serializedValues2 = createInputJson();
             	console.log(JSON.stringify(serializedValues2));
 
         		//'${path}/reward/rewardInput'
             	$.ajax({
             		type : 'POST',
-            		url : "project/rewardInput",
+            		url : "${path}/project/rewardInput",
             		data : JSON.stringify(serializedValues2),
             		//data: serializedValues2,
             		dataType : 'json',
             		contentType: "application/json; charset=utf-8;",
             		error: function(){
-                        alert("안되무");
+                        alert("저장에 실패하였습니다.");
                     },
             		success : function(json) {
-            			alert('hello');
-            			/* var data = data.json;
-            			$.each(data, function(idx, val) {
-            				console.log(idx + " " + val.reward_price);
-            			}); */
+            			alert('저장하였습니다.');
             		}
             	});
             }
@@ -243,24 +174,7 @@
             	e.preventDefault();
             	to_ajax();
             });
-            /*Ajax사용시 이용되는 데이터  */
-            /* function listCreate() {
-                $('.form-block').each(function(idx) {
-                    if ($(this).is(":checked")) {
-                        var rewardId = $(this).val();
-                        var qty = $('#qty' + rewardId).val();
-                        var reward_price = $('#reward_price' + rewardId).val();
-                        //리워드 별 금액
-                        var sumAmount = parseInt(reward_price) * parseInt(qty);
-                        
-                        // qty : 리워드별 주문자가 선택한 수량
-                        // remain_cnt : 서버에서 전달된 리워드 별 남은수량
-                        $('[role="form"]').append('<input type="hidden" name="list[' + idx + '].reward_id" value="' + rewardId + '" />');
-                        $('[role="form"]').append('<input type="hidden" name="list[' + idx + '].qty" value="' + qty + '" />');
-                        $('[role="form"]').append('<input type="hidden" name="list[' + idx + '].sumAmount" value="' + sumAmount + '" />');
-                    };
-                });
-            } */
+
             /*리워드 생성  */
             
             var section = document.querySelector("#section7");

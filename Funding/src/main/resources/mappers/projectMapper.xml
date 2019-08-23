@@ -6,11 +6,23 @@
 <mapper namespace= "project">
 
 	
+	<insert id="makerInsert" parameterType="com.crowd.funding.project.model.ProjectDTO" useGeneratedKeys="true"
+		keyProperty="maker_idx">
+		insert into maker(mem_idx)
+		values(#{mem_idx})
+	</insert>
+	
 	<insert id="add" parameterType="com.crowd.funding.project.model.ProjectDTO" useGeneratedKeys="true"   
   		keyProperty="pro_id">
-  			insert into project(pro_status,mem_idx)
-			values(0,#{mem_idx})
+  			insert into project(pro_status, mem_idx, maker_idx)
+			values(1,#{mem_idx}, #{maker_idx})
 	</insert>
+	
+	<update id="maker_update">
+		update project
+		set maker_idx=#{maker_idx}
+		where pro_id=#{pro_id}
+	</update>
 	
 	<update id="save1">
 		update project
@@ -21,11 +33,11 @@
 	</update>
 	
 	<select id ="pro_list" resultType="com.crowd.funding.project.model.ProjectDTO">
-		select *, TIMESTAMPDIFF(DAY, CURDATE(), `pro_end`) day from project order by pro_id desc;
+		select *, TIMESTAMPDIFF(DAY, CURDATE(), `pro_end`) day from project order by pro_id desc
 	</select>
 	
 	<select id ="pro_detail" resultType="com.crowd.funding.project.model.ProjectDTO">
-		select * from project where pro_id = #{pro_id}
+		select *, TIMESTAMPDIFF(DAY, CURDATE(), `pro_end`) day from project where pro_id = #{pro_id}
 	</select>
 	
 	<select id ="pro_name" resultType="String">
@@ -51,16 +63,20 @@
 		where pro_id=#{pro_id} limit 1
 	</update>
 	
-	<!--rewad 다수 DTO 저장  -->
+	<update id="request">
+		update project
+		set pro_status=2
+		where pro_id=#{pro_id} limit 1
+	</update>
+	
 	<insert id ="reward_insert">
 		INSERT INTO reward_item (pro_id, mem_idx, reward_title, reward_price, reward_sell_count,
 		reward_option_detail, shipment_start, delivery_fee, reward_description) 
 		VALUES 
 		<foreach separator="," item="item" collection="list">
-           (2,4,#{item.reward_title},#{item.reward_price},
-           #{item.reward_sell_count},#{item.reward_option_detail},now(),
+           (#{item.pro_id},#{item.mem_idx},#{item.reward_title},#{item.reward_price},
+           #{item.reward_sell_count},#{item.reward_option_detail},#{item.shipment_start},
            #{item.delivery_fee},#{item.reward_description})
         </foreach>
 	</insert>
-	
 </mapper>

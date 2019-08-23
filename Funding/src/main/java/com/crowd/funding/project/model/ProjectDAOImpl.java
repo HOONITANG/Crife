@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.crowd.funding.reward.common.FirstDATA;
 import com.crowd.funding.reward.domain.RewardDTO;
 
 @Repository
@@ -17,8 +16,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 	SqlSession sqlSession;
 
 	@Override
+	public void makerAdd(ProjectDTO dto) {
+		sqlSession.insert("project.makerInsert", dto);
+	}
+	
+	@Override
 	public void add(ProjectDTO dto) {
 		sqlSession.insert("project.add", dto);
+	}
+	
+	@Override
+	public void maker(ProjectDTO dto) {
+		sqlSession.update("project.maker_update", dto);
 	}
 
 	@Override
@@ -60,9 +69,15 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public void story_update(ProjectDTO dto) {
 		sqlSession.update("project.story_update", dto);
 	}
-	//reward 입력받기
+
+	@Override
+	public void request(int pro_id) {
+		sqlSession.update("project.request", pro_id);
+	}
+	
 	@Override
 	public void insertReward(List<RewardDTO> list) {
 		sqlSession.insert("project.reward_insert",list);
 	}
+
 }

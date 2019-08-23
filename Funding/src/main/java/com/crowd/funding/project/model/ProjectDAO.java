@@ -5,7 +5,6 @@ import java.util.List;
 import com.crowd.funding.reward.domain.RewardDTO;
 
 public interface ProjectDAO {
-
 	List<ProjectDTO> listProject();
 
 	void add(ProjectDTO dto);
@@ -23,6 +22,12 @@ public interface ProjectDAO {
 	void my_delete(int pro_id);
 
 	void story_update(ProjectDTO dto);
-	//reward 입력받기
+	
+	void request(int pro_id);
+	
+	void makerAdd(ProjectDTO dto);
+	
+	void maker(ProjectDTO dto);
+	
 	void insertReward(List<RewardDTO> list);
 }

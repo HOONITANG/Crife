@@ -1,16 +1,13 @@
 package com.crowd.funding.project.service;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
 import com.crowd.funding.project.model.ProjectDAO;
 import com.crowd.funding.project.model.ProjectDTO;
-import com.crowd.funding.reward.common.FirstDATA;
 import com.crowd.funding.reward.domain.RewardDTO;
 
 @Service
@@ -22,7 +19,11 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public void add(ProjectDTO dto) {
 		projectDao.add(dto);
-
+	}
+	
+	@Override
+	public void maker(ProjectDTO dto) {
+		projectDao.maker(dto);
 	}
 	
 	@Override
@@ -64,11 +65,20 @@ public class ProjectServiceImpl implements ProjectService {
 	public void story_update(ProjectDTO dto) {
 		projectDao.story_update(dto);
 	}
-	//리워드 입력받기
 
+	@Override
+	public void request(int pro_id) {
+		projectDao.request(pro_id);
+	}
+
+	@Override
+	public void makerAdd(ProjectDTO dto) {
+		projectDao.makerAdd(dto);
+	}
+	
 	@Override
 	public void insertReward(List<RewardDTO> list) {
 		projectDao.insertReward(list);
 	}
-	
+
 }

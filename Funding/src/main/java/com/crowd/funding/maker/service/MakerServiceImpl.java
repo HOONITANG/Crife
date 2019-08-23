@@ -8,7 +8,7 @@ import com.crowd.funding.maker.model.MakerDAO;
 import com.crowd.funding.maker.model.MakerDTO;
 
 @Service
-public class MakerServiceImple implements MakerService {
+public class MakerServiceImpl implements MakerService {
 
 	@Inject
 	MakerDAO maDAO;
@@ -34,9 +34,9 @@ public class MakerServiceImple implements MakerService {
 	}
 
 	@Override
-	public MakerDTO makerinfo(int mem_idx) throws Exception {
+	public MakerDTO makerinfo(int pro_id) throws Exception {
 		System.out.println("### makerService : makerinfo ###");
-		return maDAO.makerinfo(mem_idx);
+		return maDAO.makerinfo(pro_id);
 	}
 	
 
@@ -48,9 +48,9 @@ public class MakerServiceImple implements MakerService {
 	}
 
 	@Override
-	public void makerinfoDEL(MakerDTO maDTO) throws Exception {
+	public void delete(int maker_idx) throws Exception {
 		System.out.println("### makerService : makerinfoDEL ###");
-		maDAO.makerinfoDEL(maDTO);
+		maDAO.delete(maker_idx);
 	}
 	
 	
