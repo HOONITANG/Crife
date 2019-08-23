@@ -58,7 +58,7 @@
 		VALUES 
 		<foreach separator="," item="item" collection="list">
            (2,4,#{item.reward_title},#{item.reward_price},
-           #{item.reward_sell_count},#{item.reward_option_detail},#{item.shipment_start},
+           #{item.reward_sell_count},#{item.reward_option_detail},now(),
            #{item.delivery_fee},#{item.reward_description})
         </foreach>
 	</insert>

@@ -53,7 +53,7 @@
 </select>
 <select id="reward_info" parameterType="int" resultType="com.crowd.funding.reward.domain.RewardDTO">
 	SELECT ri.reward_id, ri.reward_title, ri.reward_description, 
-	ri.reward_price, ri.reward_option_detail
+	ri.reward_price, ri.reward_option_detail, mo.order_count as order_qty
 	FROM reward_item as ri, myorder as mo
 	where mo.reward_id = ri.reward_id AND mo.order_id= #{order_id}
 </select>

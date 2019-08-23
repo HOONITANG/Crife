@@ -24,6 +24,7 @@ import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.project.model.ProjectDTO;
 import com.crowd.funding.project.service.ProjectService;
 import com.crowd.funding.reward.common.FirstDATA;
+import com.crowd.funding.reward.domain.RewardDTO;
 
 @Controller
 @RequestMapping("/project/*")
@@ -192,6 +193,19 @@ public class ProjectController {
 		return "project/input";
 	}
 	
+	//Ajax 통신 
+	@RequestMapping(value="/rewardInput", method = RequestMethod.POST)
+	@ResponseBody
+	public Map insertReward(@RequestBody RewardDTO rewardDTO) throws Exception {
+		System.out.println("rewardInput_test");
+		System.out.println("Firstdata >>"+rewardDTO.toString());
 	
+	  if (rewardDTO != null) projectService.insertReward(rewardDTO.getList());
+	 
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", Boolean.TRUE);
+		return result;
+
+	}
 
 }

@@ -30,6 +30,9 @@ public class OrderController {
 	@RequestMapping(value="/reservation/{pro_id}", method = RequestMethod.POST)
 	public String orderInsert(Model model, OrderDTO orderDTO, @PathVariable("pro_id") int pro_id, 
 			MyorderDTO myorderDTO, RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
+		if(session.getAttribute("login") == null) {
+			return "/user/login";
+		}
 		System.out.println("reservation 동작체크");
 		System.out.println("orderDTO phone value:"+"'"+orderDTO.getOrder_phone()+"'");
 		MemberDTO memDTO = (MemberDTO) session.getAttribute("login");
@@ -61,7 +64,10 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value="/orderbill", method = RequestMethod.GET)
-	public String orderBill(Model model,  @RequestParam("order_id") int order_id) throws Exception {
+	public String orderBill(Model model,  @RequestParam("order_id") int order_id, HttpSession session) throws Exception {
+		if(session.getAttribute("login") == null) {
+			return "/user/login";
+		}
 		model.addAttribute("order_id", order_id);
 		return "/order/orderbill";	
 	}

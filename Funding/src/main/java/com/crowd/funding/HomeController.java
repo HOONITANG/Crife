@@ -36,7 +36,8 @@ public class HomeController {
 	public String home(Model model) throws Exception {
 		// 프로젝트 리스트를 DB에서 가져와서 모델에 넣음
 		model.addAttribute("list", projectService.listProject());
-		return "home";
+		return "project/reward_input";
+		//return "home";
 	}
 	
 }

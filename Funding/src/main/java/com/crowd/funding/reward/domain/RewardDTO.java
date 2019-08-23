@@ -1,5 +1,7 @@
 package com.crowd.funding.reward.domain;
 
+import java.util.List;
+
 import com.crowd.funding.myorder.domain.MyorderDTO;
 
 public class RewardDTO {
@@ -15,8 +17,34 @@ public class RewardDTO {
 	int qty; // 사용자가 선택한 리워드별 수량
 	String reward_description; // 리워드 상세설명
 	String reward_option_detail; // 리워드 옵션
-	
-	
+	String shipment_start;
+	int delivery_fee;
+	List<RewardDTO> list;
+
+	public int getDelivery_fee() {
+		return delivery_fee;
+	}
+
+	public void setDelivery_fee(int delivery_fee) {
+		this.delivery_fee = delivery_fee;
+	}
+
+	public String getShipment_start() {
+		return shipment_start;
+	}
+
+	public void setShipment_start(String shipment_start) {
+		this.shipment_start = shipment_start;
+	}
+
+	public List<RewardDTO> getList() {
+		return list;
+	}
+
+	public void setList(List<RewardDTO> list) {
+		this.list = list;
+	}
+
 	public String getReward_description() {
 		return reward_description;
 	}
@@ -112,6 +140,14 @@ public class RewardDTO {
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "RewardDTO [reward_id=" + reward_id + ", pro_id=" + pro_id + ", mem_idx=" + mem_idx + ", reward_title="
+				+ reward_title + ", reward_price=" + reward_price + ", reward_sell_count=" + reward_sell_count
+				+ ", sumAmount=" + sumAmount + ", myorderDTO=" + myorderDTO + ", order_qty=" + order_qty + ", qty="
+				+ qty + ", reward_description=" + reward_description + ", reward_option_detail=" + reward_option_detail
+				+ ", list=" + list + "]";
+	}
 
 }

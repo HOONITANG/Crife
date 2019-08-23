@@ -21,6 +21,7 @@ import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.order.service.OrderService;
 import com.crowd.funding.project.service.ProjectService;
 import com.crowd.funding.reward.common.FirstDATA;
+import com.crowd.funding.reward.domain.RewardDTO;
 import com.crowd.funding.reward.service.RewardService;
 
 @Controller
@@ -31,11 +32,7 @@ public class RewardController {
 	RewardService rewardService;
 	@Inject
 	OrderService orderService;
-	
-	//reward_input test중
-	@Inject
-	ProjectService projectService;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 	
 	@RequestMapping("/step10/{pro_id}")
@@ -66,23 +63,4 @@ public class RewardController {
 		return "/reward/second_reward";
 	}
 	
-	//Ajax 통신 
-	//test 중 project로 옮겨야함
-		@RequestMapping(value="/rewardInput", method = RequestMethod.POST)
-		@ResponseBody
-		public Map insertReward(@RequestBody FirstDATA Firstdata) throws Exception {
-			System.out.println("rewardInput_test");
-			System.out.println("Firstdata >>"+Firstdata);
-			if (Firstdata != null) 
-				projectService.insertReward(Firstdata.getList());
-			Map result = new HashMap();
-			result.put("result", Boolean.TRUE);
-			return result;
-		}
-		@RequestMapping(value = "/rewardInput", method = RequestMethod.GET)
-		public String home(Model model) throws Exception {
-
-			return "project/reward_input";
-			//return "home";
-		}
 }

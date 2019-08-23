@@ -53,12 +53,12 @@
 <div class="container">
 <form method="get">
 	<div class="row" id="centerRow">
-	  <div class="col-sm-6">
+	  <div class="col-sm-12">
 	    <div class="card">
 	      <div class="card-body">
 	        <h5 class="card-title">예약이 완료되었습니다.</h5>
 	        <p class="card-text">MyPage에서 구매이력을 확인 하실 수 있습니다.</p>
-	        <a href="${path}/mypage/myorder/orderdetail/${order_id}"class="btn btn-primary">결제내역으로 이동하기</a>
+	        <a href="${path}/mypage/myorder/orderdetail/${order_id}"class="btn btn-primary">결제상세내역으로 이동하기</a>
 	      </div>
 	      <!--card-body-->
 	    </div>
