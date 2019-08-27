@@ -142,8 +142,7 @@ $(function() {
     		return;
     	}
     });
-    
-  
+ 
    	// 페이지 로딩 시 남은 수량에 따라 체크 버튼 비활성화 = 마감표시
     $('.check_box_js').each(function(idx) {
     	var rewardId = $(this).val();
@@ -215,7 +214,6 @@ $(function() {
         return calQty * calPrice;
     }
 
-
     // check 박스 체크 이벤트 처리
     $(document).on("change", ".check_box_js", function(e) {
         e.preventDefault();
@@ -241,16 +239,9 @@ $(function() {
 
         var btn = $(e.target.parentNode); // 바로 위 부모 객체를 찾아감 (number)
         var rewardId = $(e.target.parentNode).children('.before_qty').prop("id").replace("qty", ""); // rewardId 찾음
-
-        /* 	
-        console.log(rewardId); // rewardId 값 출력
-        console.log(btn.children('#numberUpDown').text());
-        console.log(btn); 
-        */
         var stat = btn.children('.before_qty').val();
         var num = parseInt(stat, 10);
         num--;
-
 
         if (num <= 0) {
             alert('더이상 수량을 줄일수 없습니다.');

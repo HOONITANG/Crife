@@ -20,6 +20,15 @@ public class RewardDTO {
 	String shipment_start;
 	int delivery_fee;
 	List<RewardDTO> list;
+	OptionDTO optionDTO;
+
+	public OptionDTO getOptionDTO() {
+		return optionDTO;
+	}
+
+	public void setOptionDTO(OptionDTO optionDTO) {
+		this.optionDTO = optionDTO;
+	}
 
 	public int getDelivery_fee() {
 		return delivery_fee;
@@ -147,7 +156,8 @@ public class RewardDTO {
 				+ reward_title + ", reward_price=" + reward_price + ", reward_sell_count=" + reward_sell_count
 				+ ", sumAmount=" + sumAmount + ", myorderDTO=" + myorderDTO + ", order_qty=" + order_qty + ", qty="
 				+ qty + ", reward_description=" + reward_description + ", reward_option_detail=" + reward_option_detail
-				+ ", list=" + list + "]";
+				+ ", shipment_start=" + shipment_start + ", delivery_fee=" + delivery_fee + ", list=" + list
+				+ ", optionDTO=" + optionDTO + "]";
 	}
 
 }

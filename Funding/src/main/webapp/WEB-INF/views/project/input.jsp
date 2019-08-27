@@ -136,7 +136,7 @@
 										#<input type="text" name="pro_keyword2" id="pro_keyword2"value="${detail.pro_keyword2}"
 											data-parsley-length="[0, 5]">&nbsp;
 										#<input type="text" name="pro_keyword3" id="pro_keyword3"value="${detail.pro_keyword3}"
-											data-parsley-length="[0, 5]">></td>
+											data-parsley-length="[0, 5]"></td>
 								</tr>
 								<tr>
 									<td>목표금액</td>
@@ -168,7 +168,8 @@
 								</tr>
 								<tr>
 									<td>현재 파일 : ${detail.pro_imageURL}&nbsp;
-									<img src="${path}/resources/images/${detail.pro_imageURL}" width="100" height="100"><br>
+									<c:if test="${detail.pro_imageURL} != null">
+									<img src="${path}/resources/images/${detail.pro_imageURL}" width="100" height="100"><br></c:if>
 									<input type="file"name="file1" id="file1" size="50"
 									data-parsley-max-file-size="3072"></td>
 								</tr>
@@ -193,7 +194,8 @@
 			    <form id="form-main" role="form">
 			    </form>
 			    <template>
-			        <div class="form-block">
+			        <div class="form-block-pass">
+			        <input type="hidden" id="input_key" name="reward_id" value="">
 			            <div class="form-group-reward">
 			                <p class="rnumber">리워드 #</p>
 			                <p>금액 <input type="text" name="reward_price" class="input_js"></p>
@@ -202,38 +204,19 @@
 			                <p>상세설명 <input type="text" name="reward_description" class="input_js"></p>
 			                <p>옵션 조건</p>
 			                <div>
-			                   <input type="radio" value="0">
+			                   <input type="radio" name="op_val" checked="checked" class="radio_ck input_js op_js" value="0">
 			                   <span>옵션입력이 필요없는 리워드입니다.</span>
 			                </div>
 			                <div>
-			                   <input type="radio" value="1" />
-			                   <span>직접 입력 옵션이 필요한 리워드입니다. (각인, 메시지 등)</span>
-			                   <div class="option_js">
-			                       <p id="optionDetail-hint" class="input-hint">
-			                           <samp>
-			                               예시: 한글 10자, 영문 15자 이내 각인 메시지를 입력하세요.
-			                               각인 메시지를 입력하세요.
-			                           </samp>
-			                       </p>
-			                       <input type="text">
-			                   </div>
-			                </div>
-			                <div>
-			                   <input type="radio" value="2">
+			                   <input type="radio" name="op_val" class="radio_ck input_js op_js"  value="2">
 			                   <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-			                   <div class="option_js">
-			                       <p id="optionDetail-hint" class="input-hint">
-			                           옵션 값을 입력하세요. 옵션 값은 엔터로 구분됩니다.
-			                           <samp>
-			                               예시: 블랙, 230mm 화이트, 240mm
-			                           </samp>
-			                       </p>
-			                       <textarea id="option_input" style="width: 447px; padding: 10px 0px 0px 10px; font-size: 14px; overflow-y: hidden; resize: none;" maxlength="1500" title="옵션조건"></textarea>
-			                       <p>미리보기
-			                           <select id="option_view_js">
-			                               <option value="">옵션선택</option>
-			                           </select>
-			                       </p>
+			                   <div class="option_add">
+			                   		<div class="option_wrap">
+			                   		옵션 명: <input type="text" name="op_name" class="input_js op_js">
+			                   		옵션 제한 수량: <input type="text" name="op_limit_qty" class="input_js op_js">
+			                   		
+			                   		<input type="button" class="option_btn" value="추가하기"/>
+			                   		</div>
 			                   </div>
 			                </div>
 			                <p>배송료 <input type="number" name="delivery_fee" class="input_js">원</p>
@@ -374,16 +357,15 @@
 <!--리워드 삽입 스크립트  -->
 <script>
       const SHOWING_ON = "showing";
-      $(document).on("change", 'input[type="radio"]', function(e) {
-          e.preventDefault();
-          $('input[type="radio"]').each(function() {
+      $(document).on("change", '.radio_ck', function(e) {
+          $('.radio_ck').each(function() {
               if($(this).is(":checked")) {
                   optionShow($(this).parent().children('.option_js'));
-                  console.log("check");
+                  //console.log("check");
               }
               else {
                   optionHidden($(this).parent().children('.option_js'));
-                  console.log("uncheck");
+                  //console.log("uncheck");
               }
           });    
       });
@@ -425,7 +407,13 @@
           });
           select.val(selectedOption);
       });
-
+      // 옵션 추가 버튼
+      $(document).on("click", '.option_btn', function(e) {
+    	  e.preventDefault();
+    	  var clone = $(this).parent().clone();
+    	  var parent = $(this).closest('.option_add');
+    	  clone.appendTo(parent);
+      });
       // Ajax 데이터 저장처리
 
       function to_ajax() {
@@ -433,7 +421,8 @@
       	//const serializedValues2 = $('form[role="form"]').serializeJSON();
       	//const serializedValues2 = $('form[role="form"]').serialize();
       	// Json 값 삽입
-      	 const serializedValues2 = createInputJson();
+      	const serializedValues2 = createInputJson();
+      	//const serializedValues2 = createOptionJson();
       	console.log(JSON.stringify(serializedValues2));
 
   		//'${path}/reward/rewardInput'
@@ -464,36 +453,78 @@
 	  var formMain = document.querySelector("#form-main");
       
       $(".template-button").on('click', function () {
-      	let template = section.querySelector("template");
+    	let template = section.querySelector("template");
         //importNode -> cloneNode와 비슷한 역할 
         let cloneNode = document.importNode(template.content, true);
-        formMain.appendChild(cloneNode);  
-        $(".rnumber").each(function(idx) {
-        	$(this).value = "리워드 #"+idx;
-        });
+        formMain.appendChild(cloneNode); 
+       $(".form-block-pass").each(function(idx) {
+        	 var newId = new Date().getTime();
+        	 $(".form-block-pass .input_js").each(function(idx) {
+             	//$(this).val("리워드 #"+idx); text같은거로 하면 되겟네innerText
+             	var id = $(this).attr('id');
+         		var name = $(this).attr('name');
+             	$(this).attr('name',name+'_'+newId);  
+             	//console.log(name);
+        	 });
+        	 $(".form-block-pass #input_key").val(newId);
+        	 $(this).attr('class',"form-block-check");
+        	 //console.log(newId);
+        }); 
     
       });
+      
       /*저장하기 클릭시 Ajax로 보내는 Json 데이터 생성  */
       function createInputJson() {
-      	 var totalList = new Object();
-		 var testArray = new Array();
-		 var lastIndex = 0;
+      	    var totalList = new Object();
+		    var testArray = new Array();
 		    $('.form-group-reward').each(function(idx) { 
 		 	var fileData = new Array();
 		 	fileData = $(this).find('.input_js');
 		 	var data = new Object() ;
 		    console.log(idx);
+		    var newKey = "_"+$(this).parent().find('#input_key').val();
+		    //console.log("newkey:"+newKey);
 		 	/*find 사용시 바닐라자바스크립트를 사용해야하는구나  */
 		     for(var i=0; i< $(this).find('.input_js').length; i++){    
 		          // input_js 클래스에 해당하는 name 과 value 값 object생성
-		          data[fileData[i].getAttribute('name')] = fileData[i].value;	
+		          var input_name;
+			      input_name =  fileData[i].getAttribute('name').replace(newKey,'');
+		          data[input_name] = fileData[i].value;
 		     }
+		 	//concat을 사용하여 overwrite를 피함
 		     testArray = testArray.concat(data);
 		 });	
       	totalList.list = testArray;
+    	totalList.orderlist = createOptionJson();
       	/* var jsonData = JSON.stringify(totalList);
 	console.log(jsonData); */
 	return totalList;
+     }
+      
+     function createOptionJson() {
+    	      //var totalList = new Object();
+    		  var testArray = new Array();
+    		  // 마지막 번째일때 
+    		  $('.option_wrap').each(function(idx) { 
+    			  var newKey = "_"+$(this).closest('#input_key').val();
+		    	  var opData = new Array();
+		    	  opData = $(this).find('.op_js');
+		    	  var data = new Object() ;
+		    	  for(var j=0; j < $(this).find('.op_js').length; j++){    
+			          // input_js 클래스에 해당하는 name 과 value 값 object생성
+			          var input_name = opData[j].getAttribute('name').replace(newKey,'');
+			          data[input_name] = opData[j].value;
+			      }
+		    	  for (var i=0; i < 1; i++) {
+		    	  data["reward_id"] = newKey;
+		    	  }
+		    	  console.log("idx: "+ idx)
+		    	  console.log("optionnewKey:"+newKey);
+		    	  testArray = testArray.concat(data);
+		      });
+		      //totalList.oplist = testArray;
+
+    	  return testArray;
       }
 
   </script>

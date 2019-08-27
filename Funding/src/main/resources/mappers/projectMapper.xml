@@ -5,7 +5,6 @@
 <!-- namespace 선언 -->
 <mapper namespace= "project">
 
-	
 	<insert id="makerInsert" parameterType="com.crowd.funding.project.model.ProjectDTO" useGeneratedKeys="true"
 		keyProperty="maker_idx">
 		insert into maker(mem_idx)
@@ -68,7 +67,6 @@
 		set pro_status=2
 		where pro_id=#{pro_id} limit 1
 	</update>
-	
 	<insert id ="reward_insert">
 		INSERT INTO reward_item (pro_id, mem_idx, reward_title, reward_price, reward_sell_count,
 		reward_option_detail, shipment_start, delivery_fee, reward_description) 

@@ -17,19 +17,35 @@
 			<c:if test="${i%j == 0}">
 				<tr>
 			</c:if>
-			<td><img src="${path}/resources/images/${dto.pro_imageURL}"width="100px" height="100px"></td>
-			<td><a href="${path}/project/detail/${dto.pro_id}">${dto.pro_name}</a></td>
-			<c:choose>
-				<c:when test="${dto.pro_status == 0}">
-					<td>제작중</td>
+			<td><a href="${path}/project/detail/${dto.pro_id}">
+			<c:choose> 
+				<c:when test="${dto.pro_imageURL != null}">
+					<img src="${path}/resources/images/${dto.pro_imageURL}" width="100px" height="100px">
 				</c:when>
+				<c:when test="${dto.pro_imageURL == null}">
+					<img src="${path}/resources/images/no_image.png" width="100px" height="100px">
+				</c:when>
+			</c:choose>
+			</a></td>
+			<c:choose> 
+				<c:when test="${dto.pro_name != null}">
+				<td><a href="${path}/project/detail/${dto.pro_id}">${dto.pro_name}</a></td>
+				</c:when>
+				<c:when test="${dto.pro_name == null}">
+				<td><a href="${path}/project/detail/${dto.pro_id}">이름 없음</a></td>
+				</c:when>
+			</c:choose>
+			<c:choose>
 				<c:when test="${dto.pro_status == 1}">
-					<td>펀딩 진행중</td>
+					<td>제작중</td>
 				</c:when>
 				<c:when test="${dto.pro_status == 2}">
 					<td>요청 대기중</td>
 				</c:when>
 				<c:when test="${dto.pro_status == 3}">
+					<td>펀딩 진행중</td>
+				</c:when>
+				<c:when test="${dto.pro_status == 4}">
 					<td>종료된 펀딩</td>
 				</c:when>
 			</c:choose>
@@ -38,8 +54,10 @@
 				<input type="hidden" name="pro_id" value="${dto.pro_id}">
 				<input type="hidden" name="maker_idx" value="${dto.maker_idx}">
 				<input type="hidden" name="mem_idx" value="${login.mem_idx}">
+				<c:if test="${dto.pro_status == 1}">
 				<input type="button" value="수정하기" class="update">
 				<input type="button" value="삭제하기" class="delete">
+				</c:if>
 			</form></td>
 			<c:if test="${i%j == j-1}">
 				</tr>

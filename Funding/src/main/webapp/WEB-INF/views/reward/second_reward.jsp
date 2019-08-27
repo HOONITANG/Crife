@@ -47,7 +47,7 @@
     <div class="container">
         <div class="py-5 text-center">
             <h2>주문페이지2 입니다.</h2>
-            <p class="lead">전달 받은 값을 controller을 거쳐 list 형식으로 출력 후 회원정보, 기존 배송정보를 출력합니다. 유효성 검사를 위해 parsleyjs를 사용하였습니다. 기존주소지를 클릭 시 새로운 배송정보를 입력받지 않아도 예약이 가능합니다.</p>
+            <p class="lead">전달 받은 값을 controller을 거쳐 list 형식으로 출력 후 회원정보, 기존 배송정보를 출력합니다. 유효성 검사를 위해 parsleyjs를 사용하였습니다. Daum우편번호 API를 사용하여 새로운 배송정보를 입력할 수 있으며, 기존주소지를 클릭 시 새로운 배송정보를 입력받지 않아도 예약이 가능합니다.</p>
         </div>
         <form role="form" method="post" action="${path}/order/reservation/${pro_id}">
             <div class="row">
