@@ -47,7 +47,7 @@
     <div class="container">
         <div class="py-5 text-center">
             <h2>주문페이지2 입니다.</h2>
-            <p class="lead">전달 받은 값을 controller을 거쳐 list 형식으로 출력 후 회원정보, 기존 배송정보를 출력합니다. 유효성 검사를 위해 parsleyjs를 사용하였습니다. Daum우편번호 API를 사용하여 새로운 배송정보를 입력할 수 있으며, 기존주소지를 클릭 시 새로운 배송정보를 입력받지 않아도 예약이 가능합니다.</p>
+            <p class="lead">전달 받은 값을 controller을 거쳐 list 형식으로 출력 후 회원정보, 최근 배송정보를 출력합니다. 유효성 검사를 위해 parsleyjs를 사용하였습니다. Daum우편번호 API를 사용하여 새로운 배송정보를 입력할 수 있으며, 최근주소지를 클릭 시 새로운 배송정보를 입력받지 않아도 예약이 가능합니다.</p>
         </div>
         <form role="form" method="post" action="${path}/order/reservation/${pro_id}">
             <div class="row">
@@ -57,14 +57,37 @@
                     <ul class="list-group mb-3">
                         <c:forEach items="${rewardSel.list}" var="reward2">
                             <c:if test="${reward2.reward_id != 0}">
-                                <input type="hidden" class="select_count" value="${reward2.reward_id}">
+                                <input type="hidden" class="reward-select" value="${reward2.reward_id}">
                                 <input type="hidden" id="qty${reward2.reward_id}" value="${reward2.qty}">
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
                                         <h6 class="my-0">${reward2.reward_title}</h6>
-                                        <small class="text-muted">${reward2.qty}개</small>
+	                                    <small class="text-muted" id="re_qty${reward2.reward_id}">${reward2.qty}개</small>
+	                                    <ul class="list-group mb-3">
+	                              		    <c:set var="sumCount" value="0" />
+	                              		    <c:set var="optionMoney" value="0" />
+		                                    <c:forEach items="${rewardSel.optionlist}" var="option">
+			                                    <c:if test="${option.reward_id eq reward2.reward_id}">	
+		                                    		<li class="list-group-item d-flex justify-content-between lh-condensed reward_count" data-id="${reward2.reward_id}">
+					                                    <div>
+					                                    <input type="hidden" id="opQty${option.op_id}" value="${option.op_count}">
+			                                    		<input type="hidden" class="option_count" value="${option.op_id}">
+				                                        	<h6 class="my-0" style="margin-right:8px;"> ${option.op_name}</h6>
+					                                    </div>
+					                                    <div>
+				                                        	<small class="text-muted"> ${option.op_count}개</small>
+			                                        	</div>
+		                                        	</li>
+		                                         <c:set var="total" value="${total + option.sumAmount}" />	
+		                                		 <c:set var="sumCount" value="${sumCount + option.op_count}"/>	
+		                                		 <c:set var="optionMoney" value="${optionMoney + option.sumAmount}"/>
+		                                		 </c:if>
+	                                		 </c:forEach>
+                                		</ul>
+                                		<input type="hidden" id="option_qty${reward2.reward_id}" value="${sumCount}">
+                                		<input type="hidden" id="option_money${reward2.reward_id}" value="${optionMoney}">
                                     </div>
-                                    <span class="text-muted"><fmt:formatNumber pattern="###,###,###" value= "${reward2.sumAmount}" />원</span>
+                                    <span class="text-muted" id="re_money${reward2.reward_id}"><fmt:formatNumber pattern="###,###,###" value= "${reward2.sumAmount}" />원</span>
                                 </li>
                                 <c:set var="total" value="${total + reward2.sumAmount}" />
                             </c:if>
@@ -105,7 +128,7 @@
             <div class="d-block my-3">
                 <h4 class="d-flex justify-content-between align-items-center mb-4">배송지 선택</h4>
                 <div class="custom-control custom-radio">
-                    <button class="btn btn-light" id="toggle-list">기존 주소지 <i class="fa fa-angle-down"></i></button>
+                    <button class="btn btn-light" id="toggle-list">최근 주소지 <i class="fa fa-angle-down"></i></button>
                     <div class="toggle-data row">
                         <div class="col-md-6 my-3 p-3 bg-white rounded shadow-sm">
                             <input id="old_address" name="addressSelect" type="radio" class="form-check-input" required="">
@@ -177,6 +200,28 @@
 
 <script>
 $(document).ready(function() {
+
+	optionSet();
+	//옵션이 있을경우, 리워드별 금액, 갯수 설정,
+	function optionSet() {
+		$('.reward-select').each(function(idx) {
+			var rewardId = $(this).val();
+			var rewardQty = $("#qty"+rewardId).val();
+			var opQty = $("#option_qty"+rewardId).val();
+			var opMoney = $("#option_money"+rewardId).val();
+			if (rewardQty == 0) {
+				$("#re_qty"+rewardId).text(opQty+"개");
+				$("#re_money"+rewardId).text(makeComma(opMoney)+"원");
+				console.log(opMoney);
+			}
+		});
+	}
+	
+	//금액 정규식 
+	function makeComma(str) {
+		 str = String(str);
+		 return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
 	//휴대폰 번호 포맷
 	phoneFormat();
 	/*  method="post" action="${path}/order/reservation"  */
@@ -209,15 +254,29 @@ $(document).ready(function() {
         $(".toggle-data").toggle( 'slow' );
     });
 	function rewardNextStep() {
-        $('.select_count').each(function(idx) {
-            var rewardId = $(this).val();
-            var qty = $('#qty' + rewardId).val();
-			// 한번에 저장하기 위해 name을 배열로 전달한다. 
-            $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].reward_id" value="' + rewardId + '" />');
-            $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].order_count" value="' + qty + '" />');
-        });
+			$('.reward-select').each(function(idx) {
+				var rewardId = $(this).val();
+				var qty = $('#qty' + rewardId).val();
+				
+				$('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].reward_id" value="' + rewardId + '" />');
+                $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].order_count" value="' + qty + '" />');
+			})
+		
+    		$('.option_count').each(function(idx) {
+    			var rewardId = $(this).closest('.reward_count').data('id');
+    			// 한번에 저장하기 위해 name을 배열로 전달한다. 
+    			var optionId = $(this).val();
+    			var opQty = $("#opQty"+optionId).val();
+    			$('[role="form"]').append('<input type="hidden" name="orderOptList[' + idx + '].reward_id" value="' + rewardId + '" />');
+    			$('[role="form"]').append('<input type="hidden" name="orderOptList[' + idx + '].op_id" value="' + optionId + '" />');
+    			$('[role="form"]').append('<input type="hidden" name="orderOptList[' + idx + '].op_count" value="' + opQty + '" />');
+    		});
+    	
+        //주소지 관련 input 태그 생성
         addressCheck();
+        // 옵션 관련 input 태그 생성
     }
+	
 	function addressCheck() {
 		var old_address=$('#old_address');
 		var new_address=$('#new_address');
@@ -241,6 +300,7 @@ $(document).ready(function() {
 			$('[role="form"]').append('<input type="hidden" name="order_address4" value="' + order_address4 + '" />');
 		}
 	}
+	
 	$(document).on("change", "[type='radio']", function(e) {
 		var old_address=$('#old_address');
 		var new_address=$('#new_address');
@@ -253,17 +313,13 @@ $(document).ready(function() {
 			$(".toggle-data").hide();
 		}
 	});
-	
-	function phoneFormat(){
+	function phoneFormat() {
 		$('.phone_format_js').each(function(idx) {
 	    	var str = $(this).text().trim();    
 	    	var phone = str.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
 	    	$(this).text(phone);
 		});
 	}
-
-
-	
 });
 </script>
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>

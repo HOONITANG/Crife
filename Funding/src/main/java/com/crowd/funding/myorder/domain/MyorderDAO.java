@@ -16,4 +16,5 @@ public interface MyorderDAO {
 	 public MemberDTO memInfo(int order_id);
 	 public ProjectDTO proInfo(int order_id);
 	 public List<RewardDTO> rewardinfo(int order_id);
+	 public List<MyoptionDTO> optioninfo(int order_id);
 }

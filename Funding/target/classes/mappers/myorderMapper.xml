@@ -6,16 +6,7 @@
 
 <mapper namespace= "com.crowd.funding.mapper.myorderMapper">
 
-<select id="my_reward_select">
 
-<!--group by를 추가하면 한개, 아니면 내가 여러번 산만큼 프로젝트를 보여주게된다.  -->
-<!-- 리워드 한 목록 여러개 보여주기  -->
-	SELECT t1.pro_name, t1.pro_category,  t3.mem_name
-	FROM project as t1, 
-	(select * from myorder) as t2, 
-	member as t3 
-	WHERE t1.pro_id = t2.pro_id AND t2.mem_idx = t3.mem_idx AND t2.pro_id = 2 AND t2.mem_idx = 2; 
-</select>
 <!-- 현재 로그인한 회원이 리워드한 프로젝트 리스트  -->
 <!-- 하나만 보여주기  -->
 <select id="my_order_list" resultType="com.crowd.funding.myorder.common.JoinDATA">
@@ -27,7 +18,6 @@
 	order by t2.order_id desc
 </select>
 
-<!--위의 내용을 분해한 것 -->
 <select id="order_info" parameterType="int" resultType="com.crowd.funding.myorder.domain.MyorderDTO">
 	SELECT mo.order_id, mo.order_date
 	FROM myorder as mo
@@ -57,5 +47,9 @@
 	FROM reward_item as ri, myorder as mo
 	where mo.reward_id = ri.reward_id AND mo.order_id= #{order_id}
 </select>
-
+<select id="option_info" parameterType="int" resultType="com.crowd.funding.myorder.domain.MyoptionDTO">
+	SELECT oi.op_name, oo.op_count, oo.myinfo, mo.reward_id 
+	FROM option_order as oo, myorder as mo, option_item as oi
+	WHERE oo.op_id = oi.op_id AND oo.myinfo = mo.myinfo AND mo.order_id= #{order_id};
+</select>
 </mapper>

@@ -2,6 +2,7 @@ package com.crowd.funding.project.model;
 
 import java.util.List;
 
+import com.crowd.funding.reward.domain.OptionDTO;
 import com.crowd.funding.reward.domain.RewardDTO;
 
 public interface ProjectDAO {
@@ -30,4 +31,10 @@ public interface ProjectDAO {
 	void maker(ProjectDTO dto);
 	
 	void insertReward(List<RewardDTO> list);
+	
+	void insertOption(List<OptionDTO> list);
+	
+	void delReward(int pro_id);
+	
+	List<OptionDTO> selOption(int pro_id);
 }

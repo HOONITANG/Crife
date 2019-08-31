@@ -25,6 +25,7 @@ import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.project.model.ProjectDTO;
 import com.crowd.funding.project.service.ProjectService;
 import com.crowd.funding.reward.domain.RewardDTO;
+import com.crowd.funding.reward.service.RewardService;
 
 @Controller
 @RequestMapping("/project/*")
@@ -36,6 +37,9 @@ public class ProjectController {
 
 	@Inject
 	MakerService makerService;
+	
+	@Inject
+	RewardService rewardService;
 
 	// check.jsp로 이동
 	@RequestMapping("check")
@@ -75,6 +79,7 @@ public class ProjectController {
 			throws Exception {
 		model.addAttribute("detail", projectService.pro_detail(pro_id)); // 프로젝트 번호에 맞는 프로젝트 정보를 가져옴
 		model.addAttribute("maker_detail", makerService.makerinfo(dto.getPro_id()));
+		
 		return "project/input"; // input.jsp로 이동
 	}
 
@@ -128,6 +133,9 @@ public class ProjectController {
 	public String update_page(Model model, ProjectDTO dto) throws Exception {
 		model.addAttribute("detail", projectService.pro_detail(dto.getPro_id()));
 		model.addAttribute("maker_detail", makerService.makerinfo(dto.getPro_id()));
+		// 리워드 보여주기
+		model.addAttribute("rewards", rewardService.rewardShow(dto.getPro_id()));
+		model.addAttribute("options", projectService.selOption(dto.getPro_id()));
 		return "project/input";
 	}
 
@@ -191,6 +199,8 @@ public class ProjectController {
 		int memIdx = memDTO.getMem_idx();
 		// 공백일 경우 null 셋팅
 		
+		if(rewardDTO.getList().get(0).getPro_id() != 0)
+			projectService.delReward(rewardDTO.getList().get(0).getPro_id());
 	    if (rewardDTO != null) {
 	    	for(int i = 0 ; i < rewardDTO.getList().size(); i++) {
 	    		rewardDTO.getList().get(i).setMem_idx(memIdx);
@@ -199,8 +209,21 @@ public class ProjectController {
 	    		}
 			}
 	    	projectService.insertReward(rewardDTO.getList());
+	    	// 옵션 rewardId 매핑 작업, 옵션 insert
+	    	for(int i = 0 ; i < rewardDTO.getList().size(); i++) {
+		    	int rewardId = rewardDTO.getList().get(i).getReward_id();
+		    	RewardDTO rewardList = rewardDTO.getList().get(i);
+		    	for (int j = 0; j < rewardList.getOptionlist().size(); j++) {
+		    		rewardList.getOptionlist().get(j).setReward_id(rewardId);
+		    	}
+		    	// 옵션 insert
+		    	projectService.insertOption(rewardList.getOptionlist());
+			}
 	    }
-	    System.out.println("Firstdata >>"+rewardDTO.toString());
+	    
+	    System.out.println("RewardDTO >>"+rewardDTO.toString());
+	    //System.out.println("optionDTo >>"+rewardDTO.getList().get(0).getOptionlist().get(0).toString());
+	 
 		Map<String, Object> result = new HashMap<>();
 		result.put("result", Boolean.TRUE);
 		return result;

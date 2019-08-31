@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.crowd.funding.reward.domain.OptionDTO;
 import com.crowd.funding.reward.domain.RewardDTO;
 
 @Repository
@@ -80,4 +81,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 		sqlSession.insert("project.reward_insert",list);
 	}
 
+	@Override
+	public void insertOption(List<OptionDTO> list) {
+		sqlSession.insert("project.option_insert",list);
+	}
+
+	@Override
+	public void delReward(int pro_id) {
+		sqlSession.delete("project.reward_del", pro_id);
+	}
+
+	@Override
+	public List<OptionDTO> selOption(int pro_id) {
+		return sqlSession.selectList("project.option_sel", pro_id);
+	}
 }

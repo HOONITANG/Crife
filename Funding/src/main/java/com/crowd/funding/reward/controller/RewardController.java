@@ -32,12 +32,15 @@ public class RewardController {
 	RewardService rewardService;
 	@Inject
 	OrderService orderService;
+	@Inject
+	ProjectService projectService;
 
 	private static final Logger logger = LoggerFactory.getLogger(RewardController.class);
 	
 	@RequestMapping("/step10/{pro_id}")
 	public String firstRead(Model model, @PathVariable("pro_id") int pro_id, HttpSession session) throws Exception {
 		model.addAttribute("rewards", rewardService.rewardShow(pro_id));
+		model.addAttribute("options", projectService.selOption(pro_id));
 		model.addAttribute("pro_id",pro_id);
 		if(session.getAttribute("login") == null) {
 			return "/user/login";
@@ -53,6 +56,7 @@ public class RewardController {
 		if(session.getAttribute("login") == null) {
 			return "/user/login";
 		}
+		System.out.println("FirstDATA: " + firstDATA.toString());
 		MemberDTO memDTO = (MemberDTO) session.getAttribute("login");
 		int memIdx = memDTO.getMem_idx();
 		model.addAttribute("rewardSel",firstDATA);
@@ -62,5 +66,4 @@ public class RewardController {
 		//model.addAttribute("rewardSel", rewardService.rewardSel(reward_id));		
 		return "/reward/second_reward";
 	}
-	
 }

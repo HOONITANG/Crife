@@ -19,15 +19,25 @@ public class RewardDTO {
 	String reward_option_detail; // 리워드 옵션
 	String shipment_start;
 	int delivery_fee;
+	int op_val;
 	List<RewardDTO> list;
-	OptionDTO optionDTO;
+	List<OptionDTO> optionlist;
 
-	public OptionDTO getOptionDTO() {
-		return optionDTO;
+	
+	public int getOp_val() {
+		return op_val;
 	}
 
-	public void setOptionDTO(OptionDTO optionDTO) {
-		this.optionDTO = optionDTO;
+	public void setOp_val(int op_val) {
+		this.op_val = op_val;
+	}
+
+	public List<OptionDTO> getOptionlist() {
+		return optionlist;
+	}
+
+	public void setOptionlist(List<OptionDTO> optionlist) {
+		this.optionlist = optionlist;
 	}
 
 	public int getDelivery_fee() {
@@ -157,7 +167,7 @@ public class RewardDTO {
 				+ ", sumAmount=" + sumAmount + ", myorderDTO=" + myorderDTO + ", order_qty=" + order_qty + ", qty="
 				+ qty + ", reward_description=" + reward_description + ", reward_option_detail=" + reward_option_detail
 				+ ", shipment_start=" + shipment_start + ", delivery_fee=" + delivery_fee + ", list=" + list
-				+ ", optionDTO=" + optionDTO + "]";
+				+ ", optionlist=" + optionlist + "]";
 	}
 
 }

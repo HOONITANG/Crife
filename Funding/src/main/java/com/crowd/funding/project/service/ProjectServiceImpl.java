@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.crowd.funding.project.model.ProjectDAO;
 import com.crowd.funding.project.model.ProjectDTO;
+import com.crowd.funding.reward.domain.OptionDTO;
 import com.crowd.funding.reward.domain.RewardDTO;
 
 @Service
@@ -81,4 +82,19 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDao.insertReward(list);
 	}
 
+	@Override
+	public void insertOption(List<OptionDTO> list) {
+		projectDao.insertOption(list);
+	}
+
+	@Override
+	public void delReward(int pro_id) {
+		projectDao.delReward(pro_id);
+	}
+
+	@Override
+	public List<OptionDTO> selOption(int pro_id) {
+		return projectDao.selOption(pro_id);
+	}
+	
 }

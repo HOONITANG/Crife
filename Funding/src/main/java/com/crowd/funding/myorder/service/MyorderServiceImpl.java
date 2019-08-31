@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.myorder.common.JoinDATA;
+import com.crowd.funding.myorder.domain.MyoptionDTO;
 import com.crowd.funding.myorder.domain.MyorderDAO;
 import com.crowd.funding.myorder.domain.MyorderDTO;
 import com.crowd.funding.order.domain.OrderDTO;
@@ -48,6 +49,11 @@ public class MyorderServiceImpl implements MyorderService {
 	@Override
 	public List<RewardDTO> rewardinfo(int order_id) {
 		return myorderDAO.rewardinfo(order_id);
+	}
+
+	@Override
+	public List<MyoptionDTO> optioninfo(int order_id) {
+		return myorderDAO.optioninfo(order_id);
 	}
 	
 }

@@ -7,8 +7,28 @@ public class OptionDTO {
 	String op_name;
 	int reward_id;
 	int op_limit_qty;
+	int op_count; // 옵션 주문 수량
+	int sumAmount; // 옵션 총합
 	List<OptionDTO> oplist;
 	
+	public int getSumAmount() {
+		return sumAmount;
+	}
+	public void setSumAmount(int sumAmount) {
+		this.sumAmount = sumAmount;
+	}
+	public int getOp_count() {
+		return op_count;
+	}
+	public void setOp_count(int op_count) {
+		this.op_count = op_count;
+	}
+	public List<OptionDTO> getOplist() {
+		return oplist;
+	}
+	public void setOplist(List<OptionDTO> oplist) {
+		this.oplist = oplist;
+	}
 	public int getOp_id() {
 		return op_id;
 	}
@@ -33,4 +53,11 @@ public class OptionDTO {
 	public void setOp_limit_qty(int op_limit_qty) {
 		this.op_limit_qty = op_limit_qty;
 	}
+	
+	@Override
+	public String toString() {
+		return "OptionDTO [op_id=" + op_id + ", op_name=" + op_name + ", reward_id=" + reward_id + ", op_limit_qty="
+				+ op_limit_qty + ", oplist=" + oplist + "]";
+	}
+	
 }

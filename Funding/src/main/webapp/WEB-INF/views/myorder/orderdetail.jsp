@@ -106,19 +106,36 @@
     							<c:forEach items="${rewardinfo}" var="rewards">
     							<tr>
     								<td>
+    								<input type="hidden" class="reward_option" value="${rewards.reward_id}">
+    								<input type="hidden" id="qty${rewards.reward_id}" value="${rewards.order_qty}">
     								${rewards.reward_title}<br>
     								<small class="text-muted">${rewards.reward_description}</small>
+    								<c:set var="opCount" value= "0" />	
+    								<c:set var="opMoney" value= "0" />
+    								<c:forEach items="${optioninfo}" var="options">
+	    								<c:if test="${options.reward_id eq rewards.reward_id}">
+	    									옵션명: ${options.op_name}
+	    									${options.op_count}개
+	    								<c:set var="total" value="${total + (rewards.reward_price * options.op_count)}" />	
+	    								<c:set var="opCount" value="${opCount + options.op_count}" />	
+	    								<c:set var="opMoney" value="${opMoney + rewards.reward_price}" />
+	    								</c:if>
+    								</c:forEach>
+    								
+    								<input type="hidden" id="op_qty${rewards.reward_id}" value="${opCount}">
+ 									<input type="hidden" id="op_money${rewards.reward_id}" value="${opMoney}">
     								</td>
-    								<td class="text-center"><fmt:formatNumber pattern="###,###,###" value= "${rewards.reward_price}"/>원</td>
-    								<td class="text-center">${rewards.order_qty}</td>
-    								<td class="text-right"><fmt:formatNumber pattern="###,###,###" value= "${rewards.reward_price * rewards.order_qty}"/>원</td>
+    								<td class="text-center"><span id="re_money${rewards.reward_id}"><fmt:formatNumber pattern="###,###,###" value= "${rewards.reward_price}"/>원 </span></td>
+    								<td class="text-center"><span id="re_qty${rewards.reward_id}">${rewards.order_qty} </span></td> 
+    								<td class="text-right"><span id="re_total${rewards.reward_id}"><fmt:formatNumber pattern="###,###,###" value= "${rewards.reward_price * rewards.order_qty}"/>원</span></td>
     							</tr>
     							<c:set var="total" value="${total + (rewards.reward_price * rewards.order_qty)}" />
+    							
     							</c:forEach>
     							<tr>
     								<td class="thick-line"></td>
     								<td class="thick-line"></td>
-    								<td class="thick-line text-center"><strong>Subtotal</strong></td>
+    								<td class="thick-line text-center"><strong>Subtotal </strong></td>
     								<td class="thick-line text-right"><fmt:formatNumber pattern="###,###,###" value= "${total}"/>원</td>
     							</tr>
     							<tr>
@@ -148,33 +165,34 @@
     </div>
     <!-- row -->   
 </div>
-
-<%-- <h2>주문정보</h2>
-<p> 주문번호: ${orderinfo.order_id} </p>
-<p> 주문날짜: ${orderinfo.order_date} </p>
-<h2>프로젝트정보</h2>
-<p> 프로젝트 종료일: ${proinfo.pro_end} </p>
-<p> 프로젝트 이름:  ${proinfo.pro_name} </p>
-<h2>메이커정보</h2>
-<p> 메이커 이름: ${meminfo.mem_name } </p>
-<h2>배송정보</h2>
-<p> 주문자 이름: ${shipinfo.order_name} </p>
-<p> 주문자 전화번호: ${shipinfo.order_phone} </p>
-<p> 주문자 배송요청: ${shipinfo.order_requests} </p>
-<p> 배송상태: ${shipinfo.order_status} </p>
-<p> 배송주소1: ${shipinfo.order_address1} </p>
-<p> 배송주소2: ${shipinfo.order_address2} </p>
-<p> 배송주소3: ${shipinfo.order_address3} </p>
-<p> 배송주소4: ${shipinfo.order_address4} </p>
-<h2>리워드</h2>
-<c:forEach items="${rewardinfo}" var="rewards">
-<p> 리워드번호: ${rewards.reward_id}</p>
-<p> 리워드제목: ${rewards.reward_title}</p>
-<p> 리워드설명: ${rewards.reward_description}</p>
-<p> 리워드가격: ${rewards.reward_price}</p>
-<p> 리워드옵션: ${rewards.reward_option_detail}</p>
-<p> 리워드수량: ${rewards.order_qty}</p>
-</c:forEach> --%>
 </form>
 </body>
+<script>
+$(document).ready(function() {
+optionSet();
+//옵션이 있을경우, 리워드별 금액, 갯수 설정,
+function optionSet() {
+	$('.reward_option').each(function(idx) {
+		var rewardId = $(this).val();
+		var rewardQty = $("#qty"+rewardId).val();
+		var opQty =  $("#op_qty"+rewardId).val();
+		var opMoney = $("#op_money"+rewardId).val();
+		var opTotal = opQty * opMoney;	
+		console.log(opTotal);
+		
+		if (rewardQty == 0) {
+			$("#re_qty"+rewardId).text(opQty);
+			$("#re_money"+rewardId).text(makeComma(opMoney)+"원");
+			$("#re_total"+rewardId).text(makeComma(opTotal)+"원");
+		}
+	});
+}
+
+//금액 정규식 
+function makeComma(str) {
+	 str = String(str);
+	 return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+});
+</script>
 </html>

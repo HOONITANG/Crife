@@ -48,8 +48,12 @@ public class MyorderDAOImpl implements MyorderDAO {
 
 	@Override
 	public List<RewardDTO> rewardinfo(int order_id) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectList(NAMESPACE+".reward_info", order_id);
+	}
+
+	@Override
+	public List<MyoptionDTO> optioninfo(int order_id) {
+		return sqlSession.selectList(NAMESPACE+".option_info", order_id);
 	}
 	
 

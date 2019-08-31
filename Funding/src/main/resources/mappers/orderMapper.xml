@@ -28,7 +28,7 @@
 	</insert>
 	
 	<!--order에 저장한 후 myorder에도 저장하는데 다수 DTO 저장  -->
-	<insert id ="my_order_insert">
+	<insert id ="my_order_insert" useGeneratedKeys="true" keyProperty="myinfo">
 		INSERT INTO myorder (mem_idx, pro_id, reward_id, order_count, order_id, order_date) 
 		VALUES 
 		<foreach separator="," item="item" collection="list">
@@ -43,5 +43,13 @@
 		order by order_id desc
 		limit 1;
 	</select>
+	
+	<insert id ="my_option_insert">
+		INSERT INTO option_order (myinfo, op_id, op_count) 
+		VALUES 
+		<foreach separator="," item="item" collection="list">
+           (#{item.myinfo},#{item.op_id},#{item.op_count})
+        </foreach>
+	</insert>
 	
 </mapper>

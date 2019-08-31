@@ -183,55 +183,114 @@
 							</table>
 						</form></p>
 			</div>
-			<!--리워드 시작  -->
 			<div id="view2">
-				<div id="section">
+			    <div id="section">
 			        <h1>리워드</h1>
 			        <div>
 			            <input type="button" class="template-button" value="리워드 생성하기">
 			        </div>
-			
-			    <form id="form-main" role="form">
-			    </form>
-			    <template>
-			        <div class="form-block-pass">
-			        <input type="hidden" id="input_key" name="reward_id" value="">
-			            <div class="form-group-reward">
-			                <p class="rnumber">리워드 #</p>
-			                <p>금액 <input type="text" name="reward_price" class="input_js"></p>
-			                <p>정렬 순서 <input type="text"></p>
-			                <p>리워드 명 <input type="text" name="reward_title" class="input_js"></p>
-			                <p>상세설명 <input type="text" name="reward_description" class="input_js"></p>
-			                <p>옵션 조건</p>
-			                <div>
-			                   <input type="radio" name="op_val" checked="checked" class="radio_ck input_js op_js" value="0">
-			                   <span>옵션입력이 필요없는 리워드입니다.</span>
-			                </div>
-			                <div>
-			                   <input type="radio" name="op_val" class="radio_ck input_js op_js"  value="2">
-			                   <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-			                   <div class="option_add">
-			                   		<div class="option_wrap">
-			                   		옵션 명: <input type="text" name="op_name" class="input_js op_js">
-			                   		옵션 제한 수량: <input type="text" name="op_limit_qty" class="input_js op_js">
-			                   		
-			                   		<input type="button" class="option_btn" value="추가하기"/>
-			                   		</div>
-			                   </div>
-			                </div>
-			                <p>배송료 <input type="number" name="delivery_fee" class="input_js">원</p>
-			                <p>제한수량</p>
-			                <span> 리워드를 <input type="number" name="reward_sell_count" class="input_js">개로 제한합니다.</span>
-			                <p>
-			                    <span>발송시작일</span>
-			                    <input type="text" name="shipment_start" class="input_js reward_date">
-			                    <input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
-			                </p>
-			            </div>
-			        </div>        
-			    </template>
-			    
-			    <input type="button" class="btn ins-btn" value="저장하기" />
+			        <c:forEach items="${rewards}" var="reward">
+				        <div class="form-block-check">
+				            <input type="hidden" id="input_key" value="${reward.reward_id}">
+				            <div class="form-group-reward">
+				                <button type='button' class="delBtn"> 제거하기 </button>
+				                <p class="rnumber">리워드 #</p>
+				                <p>금액
+				                    <input type="text" name="reward_price${reward.reward_id}" class="input_js" value="${reward.reward_price}">
+				                </p>
+				                <p>리워드 명
+				                    <input type="text" name="reward_title${reward.reward_id}" class="input_js" value="${reward.reward_title}">
+				                </p>
+				                <p>상세설명
+				                    <input type="text" name="reward_description${reward.reward_id}" class="input_js" value="${reward.reward_description}">
+				                </p>
+				                <p>옵션 조건</p>
+				                <div>
+				                    <input type="radio" name="op_val${reward.reward_id}" class="radio_ck" value="0">
+				                    <span>옵션입력이 필요없는 리워드입니다.</span>
+				                </div>
+				                <div>
+				                    <input type="radio" name="op_val${reward.reward_id}" checked="checked" class="radio_ck" value="1">
+				                    <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
+				                    <c:forEach items="${options}" var="option">
+					                    <c:if test="${option.reward_id eq reward.reward_id}">
+					                    <div class="option_add">
+					                        <input type="button" class="option_add_btn" value="추가하기" />
+					                        <div class="option_wrap">
+					                                                        옵션 명:
+					                            <input type="text" name="op_name${reward.reward_id}" class="input_js op_js" value="${option.op_name}"> 
+					                                                        옵션 제한 수량:
+					                            <input type="text" name="op_limit_qty${reward.reward_id}" class="input_js op_js"  value="${option.op_limit_qty}">
+												<input type="button" class="option_del_btn" value="제거하기" />
+					                        </div>
+					                    </div>
+					                    </c:if>
+				                    </c:forEach>
+				                </div>
+				                <p>배송료
+				                    <input type="text" name="delivery_fee${reward.reward_id}" class="input_js" value="${reward.delivery_fee}">원</p>
+				                <p>제한수량</p>
+				                <span> 리워드를 <input type="number" name="reward_sell_count${reward.reward_id}" class="input_js" value="${reward.reward_sell_count}">개로 제한합니다.</span>
+				                <p>
+				                    <span>발송시작일</span>
+				                    <input type="text" name="shipment_start${reward.reward_id}" class="input_js reward_date" value="${reward.shipment_start}">
+				                    <input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
+				                </p>
+				            </div>
+				        </div>
+			        </c:forEach>
+				    <form id="form-main" role="form">
+				    </form>
+				    <template>
+				        <div class="form-block-pass">
+				            <input type="hidden" id="input_key" value="">
+				            <div class="form-group-reward">
+				                <button type='button' class="delBtn"> 제거하기 </button>
+				                <p class="rnumber">리워드 #</p>
+				                <p>금액
+				                    <input type="text" name="reward_price" class="input_js">
+				                </p>
+				                <p>정렬 순서
+				                    <input type="text">
+				                </p>
+				                <p>리워드 명
+				                    <input type="text" name="reward_title" class="input_js">
+				                </p>
+				                <p>상세설명
+				                    <input type="text" name="reward_description" class="input_js">
+				                </p>
+				                <p>옵션 조건</p>
+				                <div>
+				                    <input type="radio" name="op_val" class="radio_ck " value="0">
+				                    <span>옵션입력이 필요없는 리워드입니다.</span>
+				                </div>
+				                <div>
+				                    <input type="radio" name="op_val" checked="checked" class="radio_ck" value="1">
+				                    <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
+				                    <div class="option_add">
+				                    	<input type="button" class="option_add_btn" value="추가하기"/>
+				                        <div class="option_wrap">
+				                                                        옵션 명:
+				                            <input type="text" name="op_name" class="input_js op_js"> 
+				                                                        옵션 제한 수량:
+				                            <input type="text" name="op_limit_qty" class="input_js op_js">
+				                            <input type="button" class="option_del_btn" value="제거하기" />
+				                        </div>
+				                    </div>
+				                </div>
+				                <p>배송료
+				                    <input type="number" name="delivery_fee" class="input_js">원</p>
+				                <p>제한수량</p>
+				                <span> 리워드를 <input type="number" name="reward_sell_count" class="input_js">개로 제한합니다.</span>
+				                <p>
+				                    <span>발송시작일</span>
+				                    <input type="text" name="shipment_start" class="input_js reward_date">
+				                    <input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
+				                </p>
+				            </div>
+				        </div>
+				    </template>
+			    	<input type="button" class="btn ins-btn" value="저장하기" />
 			    </div>
 			</div>
 			<div id="view3">
@@ -361,11 +420,13 @@
           $('.radio_ck').each(function() {
               if($(this).is(":checked")) {
                   optionShow($(this).parent().children('.option_js'));
-                  //console.log("check");
+                  $(this).addClass('input_js');
+                  console.log("check");
               }
               else {
                   optionHidden($(this).parent().children('.option_js'));
-                  //console.log("uncheck");
+                  $(this).removeClass('input_js');
+                  console.log("uncheck");
               }
           });    
       });
@@ -408,14 +469,26 @@
           select.val(selectedOption);
       });
       // 옵션 추가 버튼
-      $(document).on("click", '.option_btn', function(e) {
+      $(document).on("click", '.option_add_btn', function(e) {
     	  e.preventDefault();
-    	  var clone = $(this).parent().clone();
+    	 /*  var clone = $(this).parent().find('.option_wrap').clone();
     	  var parent = $(this).closest('.option_add');
-    	  clone.appendTo(parent);
+    	  clone.appendTo(parent); */
+    	  $(this).closest('.option_add').append(
+	        `<div class="option_wrap">
+                                   옵션 명:
+                 <input type="text" name="op_name" class="input_js op_js"> 
+                                   옵션 제한 수량:
+                 <input type="text" name="op_limit_qty" class="input_js op_js">
+                 <input type="button" class="option_del_btn" value="제거하기" />
+             </div>`)
+      });
+      // 옵션 제거 버튼
+      $(document).on("click", '.option_del_btn', function(e) {
+    	  e.preventDefault();
+    	  $(this).parent('.option_wrap').remove();
       });
       // Ajax 데이터 저장처리
-
       function to_ajax() {
       	//const serializedValues2 = $('form[role="form"]').serializeObject();
       	//const serializedValues2 = $('form[role="form"]').serializeJSON();
@@ -447,7 +520,6 @@
       });
 
       /*리워드 생성  */
-      
       var section = document.querySelector("#section");
 	  var templateButton = section.querySelector(".template-button");
 	  var formMain = document.querySelector("#form-main");
@@ -458,74 +530,78 @@
         let cloneNode = document.importNode(template.content, true);
         formMain.appendChild(cloneNode); 
        $(".form-block-pass").each(function(idx) {
-        	 var newId = new Date().getTime();
+    	     var newId = $(".form-block-pass #input_key").val(newId);
+        	// var newId = new Date().getTime();
         	 $(".form-block-pass .input_js").each(function(idx) {
              	//$(this).val("리워드 #"+idx); text같은거로 하면 되겟네innerText
              	var id = $(this).attr('id');
          		var name = $(this).attr('name');
-             	$(this).attr('name',name+'_'+newId);  
+             	$(this).attr('name',name+''+newId);  
              	//console.log(name);
         	 });
         	 $(".form-block-pass #input_key").val(newId);
         	 $(this).attr('class',"form-block-check");
         	 //console.log(newId);
         }); 
-    
       });
       
-      /*저장하기 클릭시 Ajax로 보내는 Json 데이터 생성  */
+      /*리워드 삭제 버튼 */
+      //remove()
+      $(document).on("click", ".delBtn", function(e) {
+        	e.preventDefault();
+        	$(this).closest(".form-block-check").remove();
+      });
+      
+      
+      /*저장하기 클릭시 Ajax로 보내는 Json 데이터 처리  */
       function createInputJson() {
       	    var totalList = new Object();
 		    var testArray = new Array();
 		    $('.form-group-reward').each(function(idx) { 
-		 	var fileData = new Array();
-		 	fileData = $(this).find('.input_js');
-		 	var data = new Object() ;
-		    console.log(idx);
-		    var newKey = "_"+$(this).parent().find('#input_key').val();
-		    //console.log("newkey:"+newKey);
-		 	/*find 사용시 바닐라자바스크립트를 사용해야하는구나  */
-		     for(var i=0; i< $(this).find('.input_js').length; i++){    
-		          // input_js 클래스에 해당하는 name 과 value 값 object생성
-		          var input_name;
-			      input_name =  fileData[i].getAttribute('name').replace(newKey,'');
-		          data[input_name] = fileData[i].value;
-		     }
-		 	//concat을 사용하여 overwrite를 피함
-		     testArray = testArray.concat(data);
-		 });	
+			 	var fileData = new Array();
+			 	fileData = $(this).find('.input_js');
+			 	var data = new Object() ;
+			    console.log(idx);
+			    var newKey = ""+$(this).parent().find('#input_key').val();
+			    //console.log("newkey:"+newKey);
+			 	/*find 사용시 바닐라자바스크립트를 사용해야하는구나  */
+			     for(var i=0; i< $(this).find('.input_js').length; i++){    
+			          // input_js 클래스에 해당하는 name 과 value 값 object생성
+			          var input_name;
+				      input_name =  fileData[i].getAttribute('name').replace(newKey,'');
+			          data[input_name] = fileData[i].value;
+			     }
+			 	//concat을 사용하여 overwrite를 피함
+			 	data['optionlist'] = createOptionJson($(this));
+			    testArray = testArray.concat(data);
+			});	
       	totalList.list = testArray;
-    	totalList.orderlist = createOptionJson();
-      	/* var jsonData = JSON.stringify(totalList);
-	console.log(jsonData); */
-	return totalList;
+		return totalList;
      }
       
-     function createOptionJson() {
-    	      //var totalList = new Object();
-    		  var testArray = new Array();
-    		  // 마지막 번째일때 
-    		  $('.option_wrap').each(function(idx) { 
-    			  var newKey = "_"+$(this).closest('#input_key').val();
-		    	  var opData = new Array();
-		    	  opData = $(this).find('.op_js');
-		    	  var data = new Object() ;
-		    	  for(var j=0; j < $(this).find('.op_js').length; j++){    
-			          // input_js 클래스에 해당하는 name 과 value 값 object생성
-			          var input_name = opData[j].getAttribute('name').replace(newKey,'');
-			          data[input_name] = opData[j].value;
-			      }
-		    	  for (var i=0; i < 1; i++) {
-		    	  data["reward_id"] = newKey;
-		    	  }
-		    	  console.log("idx: "+ idx)
-		    	  console.log("optionnewKey:"+newKey);
-		    	  testArray = testArray.concat(data);
-		      });
-		      //totalList.oplist = testArray;
-
-    	  return testArray;
-      }
-
+      // 옵션 데이터 처리
+      function createOptionJson(obj) {
+		  var testArray = new Array();
+	      obj.find('.option_wrap').each(function(idx) {
+			  console.log($(this).find('.op_js'));
+			  //var newKey = ""+$(this).parent().parent().parent().parent().find('#input_key').val();
+			  var newKey = ""+obj.parent().find('#input_key').val();
+			  //closest('#input_key')
+	    	  var opData = new Array();
+	    	  opData = $(this).find('.op_js');
+	    	  var data = new Object() ;
+	    	  for(var j=0; j < $(this).find('.op_js').length; j++){    
+		          // input_js 클래스에 해당하는 name 과 value 값 object생성
+		          var input_name = opData[j].getAttribute('name').replace(newKey,'');
+		          data[input_name] = opData[j].value;
+		      }
+	    	  console.log(newKey);
+	    	  testArray = testArray.concat(data);
+	      });
+		  
+		  //totalList.orderlist = testArray;
+		  
+	  return testArray;
+  	  }
   </script>
 </html>

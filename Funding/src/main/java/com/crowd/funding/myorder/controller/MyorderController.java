@@ -35,6 +35,7 @@ public class MyorderController {
 		model.addAttribute("meminfo", myorderService.memInfo(order_id));
 		model.addAttribute("shipinfo", myorderService.shipInfo(order_id));
 		model.addAttribute("rewardinfo", myorderService.rewardinfo(order_id));
+		model.addAttribute("optioninfo", myorderService.optioninfo(order_id));
 		return "/myorder/orderdetail";
 	}
 	
