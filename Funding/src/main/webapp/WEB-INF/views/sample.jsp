@@ -5,7 +5,6 @@
 <html>
 <head>
 <title>크라우디 : 내 프로젝트 수정</title>
-<%@ include file="../include/header.jsp"%>
 <!-- 탭 관련 css,js -->
 <script src="${path}/resources/js/tabcontent.js" type="text/javascript"></script>
 <link href="${path}/resources/css/tabcontent.css" rel="stylesheet"type="text/css" />
@@ -47,297 +46,9 @@
 	    min-height: 60px;
 	}
 </style>
-
-<!--리워드 스타일  -->
-<style>
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
-
-html {
-  line-height: 1;
-}
-
-ol, ul {
-  list-style: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-caption, th, td {
-  text-align: left;
-  font-weight: normal;
-  vertical-align: middle;
-}
-
-q, blockquote {
-  quotes: none;
-}
-q:before, q:after, blockquote:before, blockquote:after {
-  content: "";
-  content: none;
-}
-
-a img {
-  border: none;
-}
-
-article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
-  display: block;
-}
-
-/* Colors */
-/* ---------------------------------------- */
-* {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-body {
-  text-align: center;
-  font-family: 'Lato', 'sans-serif';
-  font-weight: 400;
-}
-
-u.thick {
-  font-weight: bold;
-  font-size: 20px;
-}
-
-a {
-  text-decoration: none;
-}
-
-.info-text {
-  text-align: left;
-  width: 100%;
-}
-
-header, form {
-  padding: 4em 10%;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-h2.heading {
-  font-size: 22px;
-  text-transform: uppercase;
-  font-weight: 600;
-  text-align: left;
-  color: #506982;
-  border-bottom: 1px solid #506982;
-  padding-bottom: 3px;
-  margin-bottom: 20px;
-}
-
-.controls {
-  text-align: left;
-  position: relative;
-}
-.controls input[type="text"],
-.controls input[type="email"],
-.controls input[type="number"],
-.controls input[type="date"],
-.controls input[type="tel"],
-.controls textarea,
-.controls button,
-.controls select {
-  padding: 12px;
-  font-size: 14px;
-  border: 2px solid #c6c6c6;
-  width: 100%;
-  margin-bottom: 18px;
-  color: #888;
-  font-family: 'Lato', 'sans-serif';
-  font-size: 19px;
-  font-weight: 300;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-}
-.controls input[type="text"]:focus, .controls input[type="text"]:hover,
-.controls input[type="email"]:focus,
-.controls input[type="email"]:hover,
-.controls input[type="number"]:focus,
-.controls input[type="number"]:hover,
-.controls input[type="date"]:focus,
-.controls input[type="date"]:hover,
-.controls input[type="tel"]:focus,
-.controls input[type="tel"]:hover,
-.controls textarea:focus,
-.controls textarea:hover,
-.controls button:focus,
-.controls button:hover,
-.controls select:focus,
-.controls select:hover {
-  outline: none;
-  border-color: #9FB1C1;
-}
-.controls input[type="text"]:focus + label, .controls input[type="text"]:hover + label,
-.controls input[type="email"]:focus + label,
-.controls input[type="email"]:hover + label,
-.controls input[type="number"]:focus + label,
-.controls input[type="number"]:hover + label,
-.controls input[type="date"]:focus + label,
-.controls input[type="date"]:hover + label,
-.controls input[type="tel"]:focus + label,
-.controls input[type="tel"]:hover + label,
-.controls textarea:focus + label,
-.controls textarea:hover + label,
-.controls button:focus + label,
-.controls button:hover + label,
-.controls select:focus + label,
-.controls select:hover + label {
-  color: #bdcc00;
-  cursor: text;
-}
-.controls .fa-sort {
-  position: absolute;
-  right: 10px;
-  top: 17px;
-  color: #999;
-}
-.controls select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-}
-.controls label {
-  position: absolute;
-  left: 8px;
-  top: 12px;
-  width: 60%;
-  color: #999;
-  font-size: 16px;
-  display: inline-block;
-  padding: 4px 10px;
-  font-weight: 400;
-  background-color: rgba(255, 255, 255, 0);
-  -moz-transition: color 0.3s, top 0.3s, background-color 0.8s;
-  -o-transition: color 0.3s, top 0.3s, background-color 0.8s;
-  -webkit-transition: color 0.3s, top 0.3s, background-color 0.8s;
-  transition: color 0.3s, top 0.3s, background-color 0.8s;
-  background-color: white;
-}
-.controls label.active {
-  top: -11px;
-  color: #555;
-  background-color: white;
-  width: auto;
-}
-.controls textarea {
-  resize: none;
-  height: 200px;
-}
-
-#something {
-  width: 9.9em;
-}
-
-#regno {
-  width: 12.6em;
-}
-
-#btnReg {
-  height: 3.8em;
-}
-
-button {
-  cursor: pointer;
-  background-color: #32505F;
-  border: none;
-  color: #fff;
-  padding: 12px 0;
-  float: right;
-}
-button:hover {
-  background-color: #3b5e70;
-}
-
-.clear:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.grid {
-  background: white;
-}
-.grid:after {
-  /* Or @extend clearfix */
-  content: "";
-  display: table;
-  clear: both;
-}
-
-[class*='col-'] {
-  float: left;
-  padding-right: 10px;
-}
-.grid [class*='col-']:last-of-type {
-  padding-right: 0;
-}
-
-.col-2-3 {
-  width: 66.66%;
-}
-
-.col-1-3 {
-  width: 33.33%;
-}
-
-.col-1-2 {
-  width: 50%;
-}
-
-.col-1-4 {
-  width: 25%;
-}
-
-@media (max-width: 760px) {
-  .col-1-4-sm, .col-1-3, .col-2-3 {
-    width: 100%;
-  }
-
-  [class*='col-'] {
-    padding-right: 0px;
-  }
-}
-.col-1-8 {
-  width: 12.5%;
-}
-</style>
 </head>
 
 <body style="font-family: 'Nanum Gothic', sans-serif;">
-<%@ include file="../include/navbar.jsp"%>
 	<!-- 승인요청 버튼 폼 -->
 	<form id="ok" name="ok" action="${path}/project/request" method="post">
 		<input type="hidden" name="pro_id" value="${detail.pro_id}">
@@ -472,174 +183,113 @@ button:hover {
 			</div>
 			<div id="view2">
 			    <div id="section">
-					<h2 class="heading">리워드</h2>
-				    <div>
-				    	<center><h1><u class="thick template-button">리워드 생성하기</u></h1></center>
-				    </div>
-					<c:forEach items="${rewards}" var="reward">
-				 	<div class="form-block-check">
-				 		<input type="hidden" id="input_key" value="${reward.reward_id}">
-						<div class="form-group-reward">
-							<div class="grid"> <!--Start Grid-->
-								<button type='button' class="delBtn pull-right"> 제거하기 </button>
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">리워드 명</p>
-										<input type="text" name="reward_title${reward.reward_id}" class="input_js" value="${reward.reward_title}">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">금액</p>
-										<input type="text" name="reward_price${reward.reward_id}" class="input_js" value="${reward.reward_price}">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-				            	<p class="info-text">리워드 상세내역</p>
-				            	<br>
-					            <div class="controls">
-					            	<textarea name="reward_description${reward.reward_id}" class="input_js floatLabel">${reward.reward_description}</textarea>
-					            </div>
-				            </div> <!--End Grid-->
-				            <div class="grid"> <!--Start Grid-->
-								<div class="controls">
-									<p class="info-text">옵션 조건</p>
-									<input type="radio" name="op_val${reward.reward_id}" class="radio_ck" value="0">
-									<span> 옵션입력이 필요없는 리워드입니다. </span>
-									<br>
-									<input type="radio" name="op_val${reward.reward_id}" class="radio_ck" value="1">
-							        <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-							        <input type="button" class="option_add_btn btn pull-right" value="추가하기" />
-							        <c:forEach items="${options}" var="option">
-							        	<c:if test="${option.reward_id eq reward.reward_id}">
-						                <div class="option_add mb-3">
-						                	<div class="option_wrap">
-						                		<p class="info-text">옵션 명</p>
-						                		<input type="text" name="op_name${reward.reward_id}" class="input_js op_js" value="${option.op_name}"> 
-						                		<p class="info-text">옵션 제한 수량</p>
-						                		<input type="text" name="op_limit_qty${reward.reward_id}" class="input_js op_js"  value="${option.op_limit_qty}">
-						                		<input type="button" class="option_del_btn btn pull-right" value="제거하기" />
-						                	</div>	
-						                </div>    
-						                </c:if>
-							        </c:forEach>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">배송료 (단위: 원)</p>
-										<input type="text" name="delivery_fee${reward.reward_id}" class="input_js" value="${reward.delivery_fee}">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">제한수량</p>
-										<input type="number" name="reward_sell_count${reward.reward_id}" class="input_js" value="${reward.reward_sell_count}">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">발송시작일</p>
-										<input type="text" name="shipment_start${reward.reward_id}" class="input_js reward_date" value="${reward.shipment_start}">
-				              			<input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-						</div> 
-						<!-- form-group-reward -->
-				 	</div>
-				 	<!-- form-block-check -->
-				 	</c:forEach>
-				 	<form id="form-main" role="form">
-				  	</form>
-				 	<template>
-				 	<div class="form-block-pass">
-						<input type="hidden" id="input_key" value="">
-				    	<div class="form-group-reward">
-				    		<div class="grid"> <!--Start Grid-->
-								<button type='button' class="delBtn pull-right"> 제거하기 </button>
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">리워드 명</p>
-										<input type="text" name="reward_title" class="input_js">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">금액</p>
-										<input type="text" name="reward_price" class="input_js">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-					        <div class="grid"> <!--Start Grid-->
-				            	<p class="info-text">리워드 상세내역</p>
-				            	<br>
-					            <div class="controls">
-					            	<textarea name="reward_description" class="input_js"></textarea>
-					            </div>
-				            </div> <!--End Grid-->    
-							<div class="grid"> <!--Start Grid-->
-								<div class="controls">
-									<p class="info-text">옵션 조건</p>
-									<input type="radio" name="op_val" class="radio_ck" value="0">
-									<span> 옵션입력이 필요없는 리워드입니다. </span>
-									<br>
-									<input type="radio" name="op_val" class="radio_ck" value="1">
-							        <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-							        <input type="button" class="option_add_btn btn pull-right" value="추가하기" />
-					                <div class="option_add mb-3">
-					                	<div class="option_wrap">
-					                		<p class="info-text">옵션 명</p>
-					                		<input type="text" name="op_name" class="input_js op_js"> 
-					                		<p class="info-text">옵션 제한 수량</p>
-					                		<input type="text" name="op_limit_qty" class="input_js op_js">
-					                		<input type="button" class="option_del_btn btn pull-right" value="제거하기" />
-					                	</div>	
-					                </div>    
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">배송료 (단위: 원)</p>
-										<input type="text" name="delivery_fee" class="input_js">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">제한수량</p>
-										<input type="number" name="reward_sell_count" class="input_js">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-							<div class="grid"> <!--Start Grid-->
-								<div class="col-1-3">
-									<div class="controls">
-										<p class="info-text">발송시작일</p>
-										<input type="text" name="shipment_start" class="input_js reward_date" value="${reward.shipment_start}">
-				              			<input type="hidden" name="pro_id" class="input_js">
-									</div>
-								</div>
-							</div> <!--End Grid-->
-						</div> 
-						<!-- form-group-reward -->
-				 	</div>
-				 	<!-- form-block-pass -->
-				 	</template>
-				 	<input type="button" class="btn ins-btn col-1-4" value="저장하기" />
-				</div> 
+			        <h1>리워드</h1>
+			        <div>
+			            <input type="button" class="template-button" value="리워드 생성하기">
+			        </div>
+			        <c:forEach items="${rewards}" var="reward">
+				        <div class="form-block-check">
+				            <input type="hidden" id="input_key" value="${reward.reward_id}">
+				            <div class="form-group-reward">
+				                <button type='button' class="delBtn"> 제거하기 </button>
+				                <p class="rnumber">리워드 #</p>
+				                <p>금액
+				                    <input type="text" name="reward_price${reward.reward_id}" class="input_js" value="${reward.reward_price}">
+				                </p>
+				                <p>리워드 명
+				                    <input type="text" name="reward_title${reward.reward_id}" class="input_js" value="${reward.reward_title}">
+				                </p>
+				                <p>상세설명
+				                    <input type="text" name="reward_description${reward.reward_id}" class="input_js" value="${reward.reward_description}">
+				                </p>
+				                <p>옵션 조건</p>
+				                <div>
+				                    <input type="radio" name="op_val${reward.reward_id}" class="radio_ck" value="0">
+				                    <span>옵션입력이 필요없는 리워드입니다.</span>
+				                </div>
+				                <div>
+				                    <input type="radio" name="op_val${reward.reward_id}" checked="checked" class="radio_ck" value="1">
+				                    <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
+				                    <c:forEach items="${options}" var="option">
+					                    <c:if test="${option.reward_id eq reward.reward_id}">
+					                    <div class="option_add">
+					                        <input type="button" class="option_add_btn" value="추가하기" />
+					                        <div class="option_wrap">
+					                                                        옵션 명:
+					                            <input type="text" name="op_name${reward.reward_id}" class="input_js op_js" value="${option.op_name}"> 
+					                                                        옵션 제한 수량:
+					                            <input type="text" name="op_limit_qty${reward.reward_id}" class="input_js op_js"  value="${option.op_limit_qty}">
+												<input type="button" class="option_del_btn" value="제거하기" />
+					                        </div>
+					                    </div>
+					                    </c:if>
+				                    </c:forEach>
+				                </div>
+				                <p>배송료
+				                    <input type="text" name="delivery_fee${reward.reward_id}" class="input_js" value="${reward.delivery_fee}">원</p>
+				                <p>제한수량</p>
+				                <span> 리워드를 <input type="number" name="reward_sell_count${reward.reward_id}" class="input_js" value="${reward.reward_sell_count}">개로 제한합니다.</span>
+				                <p>
+				                    <span>발송시작일</span>
+				                    <input type="text" name="shipment_start${reward.reward_id}" class="input_js reward_date" value="${reward.shipment_start}">
+				                    <input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
+				                </p>
+				            </div>
+				        </div>
+			        </c:forEach>
+				    <form id="form-main" role="form">
+				    </form>
+				    <template>
+				        <div class="form-block-pass">
+				            <input type="hidden" id="input_key" value="">
+				            <div class="form-group-reward">
+				                <button type='button' class="delBtn"> 제거하기 </button>
+				                <p class="rnumber">리워드 #</p>
+				                <p>금액
+				                    <input type="text" name="reward_price" class="input_js">
+				                </p>
+				                <p>정렬 순서
+				                    <input type="text">
+				                </p>
+				                <p>리워드 명
+				                    <input type="text" name="reward_title" class="input_js">
+				                </p>
+				                <p>상세설명
+				                    <input type="text" name="reward_description" class="input_js">
+				                </p>
+				                <p>옵션 조건</p>
+				                <div>
+				                    <input type="radio" name="op_val" class="radio_ck " value="0">
+				                    <span>옵션입력이 필요없는 리워드입니다.</span>
+				                </div>
+				                <div>
+				                    <input type="radio" name="op_val" checked="checked" class="radio_ck" value="1">
+				                    <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
+				                    <div class="option_add">
+				                    	<input type="button" class="option_add_btn" value="추가하기"/>
+				                        <div class="option_wrap">
+				                                                        옵션 명:
+				                            <input type="text" name="op_name" class="input_js op_js"> 
+				                                                        옵션 제한 수량:
+				                            <input type="text" name="op_limit_qty" class="input_js op_js">
+				                            <input type="button" class="option_del_btn" value="제거하기" />
+				                        </div>
+				                    </div>
+				                </div>
+				                <p>배송료
+				                    <input type="number" name="delivery_fee" class="input_js">원</p>
+				                <p>제한수량</p>
+				                <span> 리워드를 <input type="number" name="reward_sell_count" class="input_js">개로 제한합니다.</span>
+				                <p>
+				                    <span>발송시작일</span>
+				                    <input type="text" name="shipment_start" class="input_js reward_date">
+				                    <input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
+				                </p>
+				            </div>
+				        </div>
+				    </template>
+			    	<input type="button" class="btn ins-btn" value="저장하기" />
+			    </div>
 			</div>
 			<div id="view3">
 				<p><form id="story_form" name="story_form" method="post"
@@ -878,8 +528,7 @@ button:hover {
         let cloneNode = document.importNode(template.content, true);
         formMain.appendChild(cloneNode); 
        $(".form-block-pass").each(function(idx) {
-    	     var newId = $(".form-block-pass #input_key").val(newId);
-        	// var newId = new Date().getTime();
+        	 var newId = new Date().getTime();
         	 $(".form-block-pass .input_js").each(function(idx) {
              	//$(this).val("리워드 #"+idx); text같은거로 하면 되겟네innerText
              	var id = $(this).attr('id');
@@ -889,7 +538,7 @@ button:hover {
         	 });
         	 $(".form-block-pass #input_key").val(newId);
         	 $(this).attr('class',"form-block-check");
-        	console.log(newId);
+        	 //console.log(newId);
         }); 
       });
       
