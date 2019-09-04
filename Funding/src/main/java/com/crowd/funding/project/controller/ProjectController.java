@@ -179,6 +179,7 @@ public class ProjectController {
 	// 프로젝트 삭제, 메이커 삭제
 	@RequestMapping("my_delete")
 	public String my_delete(ProjectDTO dto) throws Exception {
+		projectService.delReward(dto.getPro_id());
 		projectService.my_delete(dto.getPro_id());
 		makerService.delete(dto.getMaker_idx());
 		return "redirect:/project/my_pro";

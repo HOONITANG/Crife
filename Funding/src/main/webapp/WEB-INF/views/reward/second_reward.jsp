@@ -17,9 +17,14 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
+<script src="${path}/resources/reward/parsley.min.js"></script>
+<script src="${path}/resources/reward/pasley.ko.js"></script>	
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>	
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>	
+<script type="text/javascript">
+	var jq = jQuery.noConflict();
+</script>
+	
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -50,6 +55,7 @@
             <p class="lead">전달 받은 값을 controller을 거쳐 list 형식으로 출력 후 회원정보, 최근 배송정보를 출력합니다. 유효성 검사를 위해 parsleyjs를 사용하였습니다. Daum우편번호 API를 사용하여 새로운 배송정보를 입력할 수 있으며, 최근주소지를 클릭 시 새로운 배송정보를 입력받지 않아도 예약이 가능합니다.</p>
         </div>
         <form role="form" method="post" action="${path}/order/reservation/${pro_id}">
+        	<input type="hidden" id="project_title" value="" />
             <div class="row">
                 <div class="col-md-8 mb-4">
                     <h4 class="d-flex justify-content-between align-items-center mb-4">리워드 선택 목록</h4>
@@ -91,14 +97,16 @@
                                 </li>
                                 <c:set var="total" value="${total + reward2.sumAmount}" />
                             </c:if>
+                            <input type="hidden" id="delMoney${reward2.reward_id}" value="${reward2.delivery_fee}" />
                         </c:forEach>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>후원금</span>
-                            <span class="text-muted"><fmt:formatNumber pattern="###,###,###" value= "${rewardSel.addDonation}" />원</span>
+                            <span>배송금액</span>
+                            <span class="text-muted delMoneyInput">원</span>
                         </li>
+                        <c:set var="totalMoney" value="${total}" />
                         <li class="list-group-item d-flex justify-content-between">
                             <strong class="text-muted">총 금액</strong>
-                            <strong class="text-muted"><fmt:formatNumber pattern="###,###,###" value= "${total+rewardSel.addDonation}" />원</strong>
+                            <strong class="text-muted totalMoney"></strong>
                         </li>
                     </ul>
                 </div>
@@ -163,7 +171,7 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="order_name_js">이름</label>
-                                <input type="text" class="form-control" id="order_name_js" data-parsley-length="[2, 10]" required="">
+                                <input type="text" class="form-control" id="order_name_js" data-parsley-length="[2, 10]" required="" value="">
                             </div>
                             <div class="mb-3">
                                 <label for="order_phone_js">전화번호</label>
@@ -182,9 +190,9 @@
                 <!--custom-control custom-radio -->
             </div>
             <!--d-block my-3-->
-            <input type="hidden" id="sample4_postcode" placeholder="우편번호">
-            <input type="hidden" id="sample4_roadAddress" placeholder="도로명주소">
-            <input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+            <input type="hidden" id="sample4_postcode" placeholder="우편번호" value="">
+            <input type="hidden" id="sample4_roadAddress" placeholder="도로명주소" value="">
+            <input type="hidden" id="sample4_jibunAddress" placeholder="지번주소" value="">
             <div class="row">
                 <div class="col-md-9 mb-4">
                     <input id="rbtn" class="btn btn-primary btn-block" type="button" value="결제예약하기" />
@@ -195,13 +203,15 @@
     </div>
     <!--container-->
 </body>
-<script src="${path}/resources/reward/parsley.min.js"></script>
-<script src="${path}/resources/reward/pasley.ko.js"></script>
 
 <script>
 $(document).ready(function() {
-
+	var IMP = window.IMP; // 생략가능
+	IMP.init("imp99453622"); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+	// 옵션 설정
 	optionSet();
+	// 배송금액설정
+	delMoney();
 	//옵션이 있을경우, 리워드별 금액, 갯수 설정,
 	function optionSet() {
 		$('.reward-select').each(function(idx) {
@@ -209,12 +219,32 @@ $(document).ready(function() {
 			var rewardQty = $("#qty"+rewardId).val();
 			var opQty = $("#option_qty"+rewardId).val();
 			var opMoney = $("#option_money"+rewardId).val();
+			
 			if (rewardQty == 0) {
 				$("#re_qty"+rewardId).text(opQty+"개");
 				$("#re_money"+rewardId).text(makeComma(opMoney)+"원");
-				console.log(opMoney);
 			}
 		});
+	}
+	// 배송금액 설정 
+	function delMoney() {
+		var delMoneyArr = new Array();
+		var delivery_fee;
+		$('.reward-select').each(function(idx) {
+			var rewardId = $(this).val();
+			var delMoney = $('#delMoney' + rewardId).val();
+			delMoneyArr.push(delMoney);
+		});
+		
+		var max = Math.max.apply(null, delMoneyArr);
+		if (delMoneyArr.includes('0')) {
+			delivery_fee = 0;
+		} else {
+			delivery_fee = max;
+		} 
+		$(".delMoneyInput").text(makeComma(delivery_fee)+"원");
+		$(".totalMoney").text(makeComma(delivery_fee + ${total})+"원");
+		$('[role="form"]').append('<input type="hidden" name="delivery_fee" value="' + delivery_fee + '" />');
 	}
 	
 	//금액 정규식 
@@ -232,19 +262,21 @@ $(document).ready(function() {
 		if($('#old_address').is(":checked")) { 
 			formObj.parsley().destroy();
 			rewardNextStep();
-			formObj.submit(); 
 		}
 		// validate 라이브러리 사용
 	 	//formObj.parsley();
 		if($('#new_address').is(":checked")) {
+			var result;
 			formObj.parsley().on('field:validated', function() {
 			    var ok = $('.parsley-error').length === 0;
 			    $('.bs-callout-info').toggleClass('hidden', !ok);
-			    $('.bs-callout-warning').toggleClass('hidden', ok);  
+			    $('.bs-callout-warning').toggleClass('hidden', ok); 
 			    return true;
-			 })
-			 rewardNextStep();
-		     formObj.submit(); 
+			 });
+			// parsley의 검증 결과를 true, false로 나타냄
+			 if(formObj.parsley().isValid()) {
+				 rewardNextStep();
+			 }
 		}
 	});
 	
@@ -257,7 +289,6 @@ $(document).ready(function() {
 			$('.reward-select').each(function(idx) {
 				var rewardId = $(this).val();
 				var qty = $('#qty' + rewardId).val();
-				
 				$('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].reward_id" value="' + rewardId + '" />');
                 $('[role="form"]').append('<input type="hidden" name="orderList[' + idx + '].order_count" value="' + qty + '" />');
 			})
@@ -274,7 +305,8 @@ $(document).ready(function() {
     	
         //주소지 관련 input 태그 생성
         addressCheck();
-        // 옵션 관련 input 태그 생성
+        // 결제 API
+		payment();
     }
 	
 	function addressCheck() {
@@ -322,6 +354,7 @@ $(document).ready(function() {
 	}
 });
 </script>
+<!--배송지API 스크립트  -->
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script>
     //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
@@ -382,4 +415,79 @@ $(document).ready(function() {
         }).open();
     }
 </script>
+<!--결제API 스크립트  -->
+<script>
+function addressCheck() {
+	var old_address=$('#old_address');
+	var new_address=$('#new_address');
+	var order_name=$("#order_name_js").val();
+	var order_phone=$("#order_phone_js").val();
+    var order_address1= $('#sample4_postcode').val();
+    var order_address3= $('#sample4_jibunAddress').val();
+    var order_address4= $('#order_address4').val();
+	if(old_address.is(":checked")) {  
+		$('[role="form"]').append('<input type="hidden" name="order_name" value="${orderInfo.order_name}"  />');
+		$('[role="form"]').append('<input type="hidden" name="order_phone" value="${orderInfo.order_phone}"  />');
+		$('[role="form"]').append('<input type="hidden" name="order_address1" value="${orderInfo.order_address1}"  />');
+		$('[role="form"]').append('<input type="hidden" name="order_address3" value="${orderInfo.order_address3}" />');
+		$('[role="form"]').append('<input type="hidden" name="order_address4" value="${orderInfo.order_address4}" />');
+	}
+	if(new_address.is(":checked")) {
+		$('[role="form"]').append('<input type="hidden" name="order_name" value="' + order_name + '" />');
+		$('[role="form"]').append('<input type="hidden" name="order_phone" value="' + order_phone + '" />');
+		$('[role="form"]').append('<input type="hidden" name="order_address1" value="' + order_address1 + '" />');
+		$('[role="form"]').append('<input type="hidden" name="order_address3" value="' + order_address3 + '" />');
+		$('[role="form"]').append('<input type="hidden" name="order_address4" value="' + order_address4 + '" />');
+	}
+}
+
+//결제하기
+function payment() {
+	var msg;
+	var old_address=$('#old_address');
+	var new_address=$('#new_address');
+	var totalMoney = $('.totalMoney').text();
+	console.log(totalMoney);
+	var formPay = $("form[role='form']");
+	/*배송지 정보*/
+	if(old_address.is(":checked")) {  
+		var order_name="${orderInfo.order_name}";
+		var order_phone="${orderInfo.order_phone}";
+	    var order_address1= "${orderInfo.order_address1}";
+	    var order_address3= "${orderInfo.order_address3}";
+	    var order_address4= "${orderInfo.order_address4}";
+	}
+	if(new_address.is(":checked")) { 
+		var order_name=$("#order_name_js").val();
+		var order_phone=$("#order_phone_js").val();
+	    var order_address1= $('#sample4_postcode').val();
+	    var order_address3= $('#sample4_jibunAddress').val();
+	    var order_address4= $('#order_address4').val();
+	}
+	IMP.request_pay({
+        pg: 'kakao',
+        pay_method: 'card',
+        merchant_uid: 'merchant_' + new Date().getTime(),
+        name: '${pro_name}',
+        amount: totalMoney,
+        buyer_email: '${pinfo.mem_email}',
+        buyer_name: order_name,
+        buyer_tel: order_phone,
+        buyer_addr: order_address3,
+        buyer_postcode: order_address1
+    }, function(response) {
+		//결제 후 호출되는 callback함수
+		if ( response.success ) { //결제 성공
+			console.log(response);
+			msg = '결제가 완료되었습니다.';
+            alert(msg);
+            formPay.submit();
+            
+		} else {
+			alert('결제실패 : ' + response.error_msg);
+		}
+	})
+}
+</script>
+
 </html>

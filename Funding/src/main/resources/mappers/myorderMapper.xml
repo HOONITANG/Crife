@@ -10,7 +10,7 @@
 <!-- 현재 로그인한 회원이 리워드한 프로젝트 리스트  -->
 <!-- 하나만 보여주기  -->
 <select id="my_order_list" resultType="com.crowd.funding.myorder.common.JoinDATA">
-	SELECT t1.pro_name, t1.pro_category,  t3.mem_name, t2.order_id
+	SELECT t1.pro_name, t1.pro_category, t1.pro_imageURL,  t3.mem_name, t2.order_id, t2.order_date
 	FROM project as t1, 
 	(select * from myorder group by order_id) as t2, 
 	member as t3 
@@ -43,7 +43,7 @@
 </select>
 <select id="reward_info" parameterType="int" resultType="com.crowd.funding.reward.domain.RewardDTO">
 	SELECT ri.reward_id, ri.reward_title, ri.reward_description, 
-	ri.reward_price, ri.reward_option_detail, mo.order_count as order_qty
+	ri.reward_price, ri.reward_option_detail, mo.order_count as order_qty, ri.delivery_fee
 	FROM reward_item as ri, myorder as mo
 	where mo.reward_id = ri.reward_id AND mo.order_id= #{order_id}
 </select>

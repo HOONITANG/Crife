@@ -56,16 +56,17 @@ public class OrderController {
 		orderService.myOrderInsert(myorderDTO.getOrderList());
 
 		// option Myinfo값 설정
-		for(int i = 0 ; i < myorderDTO.getOrderList().size(); i++) {
-			int myinfo = myorderDTO.getOrderList().get(i).getMyinfo();
-			int rewardId = myorderDTO.getOrderList().get(i).getReward_id();
-			for(int j = 0; j < myoptionDTO.getOrderOptList().size(); j++) {
-				if(rewardId == myoptionDTO.getOrderOptList().get(j).getReward_id())
-					myoptionDTO.getOrderOptList().get(j).setMyinfo(myinfo);
+		if(myoptionDTO.getOrderOptList() != null) {
+			for(int i = 0 ; i < myorderDTO.getOrderList().size(); i++) {
+				int myinfo = myorderDTO.getOrderList().get(i).getMyinfo();
+				int rewardId = myorderDTO.getOrderList().get(i).getReward_id();
+				for(int j = 0; j < myoptionDTO.getOrderOptList().size(); j++) {
+					if(rewardId == myoptionDTO.getOrderOptList().get(j).getReward_id())
+						myoptionDTO.getOrderOptList().get(j).setMyinfo(myinfo);
+				}
 			}
+			orderService.myOptionInsert(myoptionDTO.getOrderOptList());
 		}
-		orderService.myOptionInsert(myoptionDTO.getOrderOptList());
-		
 		redirectAttributes.addAttribute("order_id", orderId);
 		return "redirect:/order/orderbill";
 	}

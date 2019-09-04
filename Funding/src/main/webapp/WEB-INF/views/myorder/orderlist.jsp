@@ -47,7 +47,7 @@
                     <p class="card-text">${rewardlist.mem_name}</p>
                     ${rewardlist.pro_category}->카테고리 필터링           
                     <p class="card-text">
-                    <small class="text-muted">Last updated 3 mins ago</small></p>
+                    <small class="text-muted">${rewardlist.order_date}</small></p>
                 </div>
             </div>
         </div>

@@ -63,6 +63,8 @@ public class RewardController {
 		model.addAttribute("pinfo", rewardService.personinfo(memIdx));
 		model.addAttribute("orderInfo", orderService.orderInfo(memIdx));
 		model.addAttribute("pro_id",pro_id);
+		model.addAttribute("pro_name",projectService.nameSelect(pro_id));
+		System.out.println(projectService.nameSelect(pro_id));
 		//model.addAttribute("rewardSel", rewardService.rewardSel(reward_id));		
 		return "/reward/second_reward";
 	}

@@ -108,6 +108,7 @@
     								<td>
     								<input type="hidden" class="reward_option" value="${rewards.reward_id}">
     								<input type="hidden" id="qty${rewards.reward_id}" value="${rewards.order_qty}">
+    								<input type="hidden" id ="delMoney${rewards.reward_id}" value="${rewards.delivery_fee}">
     								${rewards.reward_title}<br>
     								<small class="text-muted">${rewards.reward_description}</small>
     								<c:set var="opCount" value= "0" />	
@@ -118,7 +119,7 @@
 	    									${options.op_count}개
 	    								<c:set var="total" value="${total + (rewards.reward_price * options.op_count)}" />	
 	    								<c:set var="opCount" value="${opCount + options.op_count}" />	
-	    								<c:set var="opMoney" value="${opMoney + rewards.reward_price}" />
+	    								<c:set var="opMoney" value="${rewards.reward_price}" />
 	    								</c:if>
     								</c:forEach>
     								
@@ -130,7 +131,7 @@
     								<td class="text-right"><span id="re_total${rewards.reward_id}"><fmt:formatNumber pattern="###,###,###" value= "${rewards.reward_price * rewards.order_qty}"/>원</span></td>
     							</tr>
     							<c:set var="total" value="${total + (rewards.reward_price * rewards.order_qty)}" />
-    							
+    							<c:set var="shipMoney" value="${rewards.delivery_fee}"/>
     							</c:forEach>
     							<tr>
     								<td class="thick-line"></td>
@@ -142,13 +143,13 @@
     								<td class="no-line"></td>
     								<td class="no-line"></td>
     								<td class="no-line text-center"><strong>Shipping</strong></td>
-    								<td class="no-line text-right">$15</td>
+    								<td class="no-line text-right delMoneyInput"></td>
     							</tr>
     							<tr>
     								<td class="no-line"></td>
     								<td class="no-line"></td>
     								<td class="no-line text-center"><strong>Total</strong></td>
-    								<td class="no-line text-right">$685.99</td>
+    								<td class="no-line text-right totalMoney"></td>
     							</tr>
     						</tbody>
     					</table>
@@ -170,6 +171,7 @@
 <script>
 $(document).ready(function() {
 optionSet();
+delMoney();
 //옵션이 있을경우, 리워드별 금액, 갯수 설정,
 function optionSet() {
 	$('.reward_option').each(function(idx) {
@@ -194,5 +196,30 @@ function makeComma(str) {
 	 return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 }
 });
+
+//배송금액 설정 
+function delMoney() {
+	var delMoneyArr = new Array();
+	var delivery_fee;
+	$('.reward_option').each(function(idx) {
+		var rewardId = $(this).val();
+		var delMoney = $('#delMoney' + rewardId).val();
+		delMoneyArr.push(delMoney);
+	});
+	
+	var max = Math.max.apply(null, delMoneyArr);
+	if (delMoneyArr.includes('0')) {
+		delivery_fee = 0;
+	} else {
+		delivery_fee = max;
+	} 
+	$(".delMoneyInput").text(makeComma(delivery_fee)+"원");
+	$(".totalMoney").text(makeComma(delivery_fee + ${total})+"원");
+}
+//금액 정규식 
+function makeComma(str) {
+	 str = String(str);
+	 return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
 </script>
 </html>

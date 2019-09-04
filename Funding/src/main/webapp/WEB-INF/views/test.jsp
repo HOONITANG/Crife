@@ -1,190 +1,76 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet" id="bootstrap-css">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-
+<title>topnavbar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-
+nav.navbar-findcond { background: #fff; border-color: #ccc; box-shadow: 0 0 2px 0 #ccc; }
+nav.navbar-findcond a { color: black; }
+nav.navbar-findcond ul.navbar-nav a { color: black; border-style: solid; border-width: 0 0 2px 0; border-color: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover,
+nav.navbar-findcond ul.navbar-nav a:visited,
+nav.navbar-findcond ul.navbar-nav a:focus,
+nav.navbar-findcond ul.navbar-nav a:active { background: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover { border-color: black; }
+nav.navbar-findcond li.divider { background: #ccc; }
+nav.navbar-findcond button.navbar-toggle { background: black; border-radius: 2px; }
+nav.navbar-findcond button.navbar-toggle:hover { background: #999; }
+nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
+nav.navbar-findcond ul.dropdown-menu { border: 0; background: #fff; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; }
+nav.navbar-findcond ul.dropdown-menu > li > a { color: #444; }
+nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: black; color: #fff; }
+nav.navbar-findcond span.badge { background: black; font-weight: normal; font-size: 11px; margin: 0 4px; }
+nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }
 
 </style>
 </head>
 <body>
-<div id="section">
-	<h2 class="heading">리워드</h2>
-    <div>
-    	<center><h1><u class="thick template-button">리워드 생성하기</u></h1></center>
-    </div>
-	<c:forEach items="${rewards}" var="reward">
- 	<div class="form-block-check">
- 		<input type="hidden" id="input_key" value="${reward.reward_id}">
-		<div class="form-group-reward">
-			<div class="grid"> <!--Start Grid-->
-				<button type='button' class="delBtn pull-right"> 제거하기 </button>
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">리워드 명</p>
-						<input type="text" name="reward_title${reward.reward_id}" class="input_js" value="${reward.reward_title}">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">금액</p>
-						<input type="text" name="reward_price${reward.reward_id}" class="input_js" value="${reward.reward_price}">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-            	<p class="info-text">리워드 상세내역</p>
-            	<br>
-	            <div class="controls">
-	            	<textarea name="reward_description${reward.reward_id}" class="input_js floatLabel">${reward.reward_description}</textarea>
-	            </div>
-            </div> <!--End Grid-->
-            <div class="grid"> <!--Start Grid-->
-				<div class="controls">
-					<p class="info-text">옵션 조건</p>
-					<input type="radio" name="op_val${reward.reward_id}" class="radio_ck" value="0">
-					<span> 옵션입력이 필요없는 리워드입니다. </span>
-					<br>
-					<input type="radio" name="op_val${reward.reward_id}" class="radio_ck" value="1">
-			        <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-			        <input type="button" class="option_add_btn btn pull-right" value="추가하기" />
-			        <c:forEach items="${options}" var="option">
-			        	<c:if test="${option.reward_id eq reward.reward_id}">
-		                <div class="option_add mb-3">
-		                	<div class="option_wrap">
-		                		<p class="info-text">옵션 명</p>
-		                		<input type="text" name="op_name${reward.reward_id}" class="input_js op_js" value="${option.op_name}"> 
-		                		<p class="info-text">옵션 제한 수량</p>
-		                		<input type="text" name="op_limit_qty${reward.reward_id}" class="input_js op_js"  value="${option.op_limit_qty}">
-		                		<input type="button" class="option_del_btn btn pull-right" value="제거하기" />
-		                	</div>	
-		                </div>    
-		                </c:if>
-			        </c:forEach>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">배송료 (단위: 원)</p>
-						<input type="text" name="delivery_fee${reward.reward_id}" class="input_js" value="${reward.delivery_fee}">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">제한수량</p>
-						<input type="number" name="reward_sell_count${reward.reward_id}" class="input_js" value="${reward.reward_sell_count}">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">발송시작일</p>
-						<input type="text" name="shipment_start${reward.reward_id}" class="input_js reward_date" value="${reward.shipment_start}">
-              			<input type="hidden" name="pro_id" class="input_js" value="${detail.pro_id}">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-		</div> 
-		<!-- form-group-reward -->
- 	</div>
- 	<!-- form-block-check -->
- 	</c:forEach>
- 	<form id="form-main" role="form">
-  	</form>
- 	<template>
- 	<div class="form-block-pass">
-		<input type="hidden" id="input_key" value="">
-    	<div class="form-group-reward">
-    		<div class="grid"> <!--Start Grid-->
-				<button type='button' class="delBtn pull-right"> 제거하기 </button>
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">리워드 명</p>
-						<input type="text" name="reward_title" class="input_js">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">금액</p>
-						<input type="text" name="reward_price" class="input_js">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-	        <div class="grid"> <!--Start Grid-->
-            	<p class="info-text">리워드 상세내역</p>
-            	<br>
-	            <div class="controls">
-	            	<textarea name="reward_description" class="input_js"></textarea>
-	            </div>
-            </div> <!--End Grid-->    
-			<div class="grid"> <!--Start Grid-->
-				<div class="controls">
-					<p class="info-text">옵션 조건</p>
-					<input type="radio" name="op_val" class="radio_ck" value="0">
-					<span> 옵션입력이 필요없는 리워드입니다. </span>
-					<br>
-					<input type="radio" name="op_val" class="radio_ck" value="1">
-			        <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
-			        <input type="button" class="option_add_btn btn pull-right" value="추가하기" />
-	                <div class="option_add mb-3">
-	                	<div class="option_wrap">
-	                		<p class="info-text">옵션 명</p>
-	                		<input type="text" name="op_name" class="input_js op_js"> 
-	                		<p class="info-text">옵션 제한 수량</p>
-	                		<input type="text" name="op_limit_qty" class="input_js op_js">
-	                		<input type="button" class="option_del_btn btn pull-right" value="제거하기" />
-	                	</div>	
-	                </div>    
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">배송료 (단위: 원)</p>
-						<input type="text" name="delivery_fee" class="input_js">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">제한수량</p>
-						<input type="number" name="reward_sell_count" class="input_js">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-			<div class="grid"> <!--Start Grid-->
-				<div class="col-1-3">
-					<div class="controls">
-						<p class="info-text">발송시작일</p>
-						<input type="text" name="shipment_start" class="input_js reward_date" value="${reward.shipment_start}">
-              			<input type="hidden" name="pro_id" class="input_js">
-					</div>
-				</div>
-			</div> <!--End Grid-->
-		</div> 
-		<!-- form-group-reward -->
- 	</div>
- 	<!-- form-block-pass -->
- 	</template>
- 	<input type="button" class="btn ins-btn col-1-4" value="저장하기" />
-</div> 
-
+<nav class="navbar navbar-findcond navbar-fixed-top">
+    <div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">HOME</a>
+		</div>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="${path}/project/listv">프로젝트 더보기</a></li>
+				<li><a href="${path}/community/notice/notice.do">공지사항</a></li>
+				<li><a href="${path}/admin/adminhome.do">관리자</a></li>
+				<li class="right"><a href="${path}/project/check">펀딩오픈신청</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">로그인 <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<c:if test="${sessionScope.login == null}">
+							<li class="right"><a href="${path}/user/login">로그인</a></li>
+							<li class="right"><a href="${path}/user/join">회원가입</a></li>
+						</c:if>
+						<c:if test="${sessionScope.login != null}">
+							<li class="right"><a href="${path}/user/logout">로그아웃</a></li>
+						</c:if>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">내 정보 <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">내 프로젝트 목록</a></li>
+						<li><a href="#">내 리워드 목록</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
 </body>
 </html>

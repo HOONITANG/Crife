@@ -3,11 +3,24 @@ package com.crowd.funding.myorder.common;
 import com.crowd.funding.myorder.domain.MyorderDTO;
 
 public class JoinDATA extends MyorderDTO {
-	
 	private String pro_name;
 	private String pro_category;
 	private String mem_name;
+	private String pro_imageURL;
+	private String order_date;
 	
+	public String getPro_imageURL() {
+		return pro_imageURL;
+	}
+	public void setPro_imageURL(String pro_imageURL) {
+		this.pro_imageURL = pro_imageURL;
+	}
+	public String getOrder_date() {
+		return order_date;
+	}
+	public void setOrder_date(String order_date) {
+		this.order_date = order_date;
+	}
 	public String getMem_name() {
 		return mem_name;
 	}

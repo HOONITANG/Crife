@@ -70,19 +70,19 @@
 					<c:forEach items="${rewards}" var="reward" varStatus="status">
 						<!-- 값은 안넘기지만 유효성 검사나 현재페이지에 보여지기 위해 생성한 input type들 입니다.  -->			
 						<input type="hidden" id="reward_sell_count${reward.reward_id}" value="${reward.reward_sell_count}">
-						<input type="hidden" id="reward_price${reward.reward_id}" value="${reward.reward_price}">							
+						<input type="hidden" id="reward_price${reward.reward_id}" value="${reward.reward_price}">
+						<input type="hidden" id="deliveryMoeny${reward.reward_id}" value="${reward.delivery_fee}">							
 						<input type="hidden" id="reward_remain_count${reward.reward_id}" value="${reward.reward_sell_count - reward.order_qty}">							
 						<input type="hidden" name="list[${status.index}].reward_title" value="${reward.reward_title}">
 						<li class="list-group-item d-flex justify-content-between lh-condensed">
 	                        <div class= "col-lg-12">
 	                            <h6 class="my-0">${reward.reward_title}</h6>
-	                            <p>옵션 유무 값: ${reward.op_val}</p>
 	                            <small class="text-muted">${reward.reward_description}</small>
 	                            <c:if test="${reward.op_val eq 0}">
 	                            	<p class="text-muted">남은 수량: ${reward.reward_sell_count - reward.order_qty} </p>
 	                            </c:if>
 	                            <c:if test="${reward.op_val eq 1}">
-	                            	<p class="text-muted">남은 수량: 옵션 수량 다 더한 값 </p>
+	                            	<p class="text-muted" id="remainOpText${reward.reward_id}"></p>
 	                            </c:if>
 		                       	<div class="list_wrap row">
 		                       		<div class="col-lg-5 mb-3">
@@ -91,9 +91,10 @@
 											value="${reward.reward_id}" class="check_box_js"
 											data-toggle="checkbox" >
 									</span>
-									</div>
+									</div>  
 									<div class="col-lg-7 mb-3">
 										<div class="number" id="number${reward.reward_id}" data-check="${reward.op_val}">
+											<c:set var="optionRemainCount" value="0" />
 											<c:if test="${reward.op_val eq 1}">
 												<select class="form-control op_category">
 												<option value='' selected>옵션을 선택해주세요</option>
@@ -104,10 +105,12 @@
 																${option.op_name}
 																(${option.op_limit_qty - option.op_count}개 남음)
 																</option>
+																<c:set var="optionRemainCount" value="${optionRemainCount + (option.op_limit_qty - option.op_count)}" />
 														</c:if>
 														</div>	
 													</c:forEach>
 												</select>	
+												<input type="hidden" id="remainOption${reward.reward_id}" value="${optionRemainCount}"/>
 												<table class="table table-condensed table-hover table-sel${reward.reward_id}">
 									    			<thead>
 									    				<tr>
@@ -149,19 +152,19 @@
 				<hr class="mb-4">
 	               <h4 class="mb-3">Payment</h4>
 	               <div class="mb-3">
-	                <span class="text-muted">후원금 </span>
-	                <input type="text" class="form-control col-md-5" id="addDonationTmp" value=0  name="sub_money" maxlength="8">
+	                <!-- <span class="text-muted">후원금 </span>
+	                <input type="text" class="form-control col-md-5" id="addDonationTmp" value=0  name="sub_money" maxlength="8"> -->
 	               </div>
 	               <input type="hidden" id="addDonation" name="addDonation" value="0">				
 				<hr class="mb-4">
-	               <div class="custom-control custom-checkbox">
+	               <!-- <div class="custom-control custom-checkbox">
 	                   <input type="checkbox" class="custom-control-input" id="dontShowNameYn" name="dontShowNameYn" value="N">
 	                   <label class="custom-control-label" for="dontShowNameYn">이름비공개</label>
 	               </div>
 	               <div class="custom-control custom-checkbox">
 	                   <input type="checkbox" class="custom-control-input" id="dontShowAmountYn" name="dontShowAmountYn" value="N">
 	                   <label class="custom-control-label" for="dontShowAmountYn">펀딩금액 비공개</label>
-	               </div>
+	               </div> -->
 	               <hr class="mb-4">
 				<div>
 	                <span>Total</span>
@@ -178,6 +181,9 @@
 $(function() {
     const SHOWING_ON = "showing";
     var firstform = $("form[role='form']");
+    //옵션 남은 수량
+    opLimitText();
+    
     $(document).on("click", "#nextButton", function(e) {
     	if(vaildCheck()) {
     		rewardNextStep();
@@ -194,13 +200,24 @@ $(function() {
     	var rewardId = $(this).val();
     	var limitCnt = $("#reward_sell_count" + rewardId).val() * 1;
         var remainCnt = $("#reward_remain_count" + rewardId).val() * 1;
-
-        if(remainCnt != 0) { 
-        	$(this).attr("disabled", false);  
-    	} else {
-    	    $(this).attr("disabled", true); 
-    	    $(this).parent().append('<span>마감되었습니다.</span>');
-    	}
+		var opCheck = $("#number" + rewardId).data('check');
+		var opRemain = $("#remainOption" + rewardId).val() * 1;
+		if (opCheck == 0) {
+	        if(remainCnt != 0) { 
+	        	$(this).attr("disabled", false);  
+	    	} else {
+	    	    $(this).attr("disabled", true); 
+	    	    $(this).parent().append('<span>마감되었습니다.</span>');
+	    	}
+		}
+		if (opCheck == 1) {
+			if(opRemain != 0) { 
+	        	$(this).attr("disabled", false);  
+	    	} else {
+	    	    $(this).attr("disabled", true); 
+	    	    $(this).parent().append('<span>마감되었습니다.</span>');
+	    	}
+		}
     }); 
 
     // 뒤로가기 시 체크버튼, 수량 값, 금액 초기화
@@ -293,6 +310,7 @@ $(function() {
                 	template.find('tbody tr').remove();
                 }
             }
+        	
         });    
         calculateTotal();
     });
@@ -422,19 +440,17 @@ $(function() {
         }
     });
     // 수량 유효성 검증
-    // e.target 안해도 this로 하면 이렇게 쉬웠구나.
     $(document).on("focusout", ".before_qty", function(e) {
         e.preventDefault();
         var before_qty = $(this).val() * 1;
-        var rewardId = $(this).prop("id").replace("qty", "");
-        var opId = $(this).parent().find('.op_count').attr('id').replace('op_qty','');
         var op_check = $(this).closest(".number").data('check');
-        
         if (op_check === 0) {
+        	var rewardId = $(this).prop("id").replace("qty", "");
 	        countValidation(rewardId, before_qty, op_check);
 	        calculateTotal();
 	    }
         if (op_check === 1) {
+        	var opId = $(this).parent().find('.op_count').attr('id').replace('op_qty','');
         	countValidation(opId, before_qty, op_check);
 	        calculateTotal();
         }
@@ -478,8 +494,6 @@ $(function() {
     		var limitCnt = $("#op_limit_qty" + Id).val() * 1;
 	        var remainCnt = ($("#op_remain_qty" + Id).val() * 1);
 	        var qty = $("#op_qty" + Id);
-	        console.log(Id);
-	        console.log(qty.val());
     	}
         /* 
         console.log("limitCnt" + limitCnt);
@@ -528,13 +542,16 @@ $(function() {
                 var rewardId = $(this).val();
                 var qty = $('#qty' + rewardId).val();
                 var reward_price = $('#reward_price' + rewardId).val();
+                var reward_delivery = $('#deliveryMoeny' + rewardId).val();
                 //리워드 별 금액
                 var sumAmount = parseInt(reward_price) * parseInt(qty);
                 //옵션 유무
                 var op_check = $('#number'+rewardId).data('check');
 		        // qty : 리워드별 주문자가 선택한 수량
-	                // remain_cnt : 서버에서 전달된 리워드 별 남은수량
+	            // remain_cnt : 서버에서 전달된 리워드 별 남은수량
+	            // reward_delivery: 리워드별 배송금액
 	            $('[role="form"]').append('<input type="hidden" name="list[' + idx + '].reward_id" value="' + rewardId + '" />');
+	            $('[role="form"]').append('<input type="hidden" name="list[' + idx + '].delivery_fee" value="' + reward_delivery + '" />');
 	            //옵션이 없을경우
 	            if(op_check === 0) {
 	                $('[role="form"]').append('<input type="hidden" name="list[' + idx + '].qty" value="' + qty + '" />');
@@ -576,6 +593,14 @@ $(function() {
     		return false;
     	}
     	return true;
+    }
+    /* 옵션 남은 갯수  */
+    function opLimitText() {
+    	$('.check_box_js').each(function(idx) {
+    		var rewardId = $(this).val();
+    		var opLimitQty = $("#remainOption"+rewardId).val();
+			$("#remainOpText"+rewardId).text("남은수량: "+ opLimitQty);
+    	});
     }
 });
 </script>
