@@ -16,6 +16,15 @@
 	member as t3 
 	WHERE t1.pro_id = t2.pro_id AND t1.mem_idx = t3.mem_idx AND t2.mem_idx = #{mem_idx}
 	order by t2.order_id desc
+	LIMIT #{pageStart}, #{perPageNum}
+</select>
+
+<select id="countOrder" resultType="int">
+	SELECT  COUNT(order_id)
+	FROM project as t1, 
+	(select * from myorder group by order_id) as t2, 
+	member as t3 
+	WHERE t1.pro_id = t2.pro_id AND t1.mem_idx = t3.mem_idx AND t2.mem_idx = #{mem_idx};
 </select>
 
 <select id="order_info" parameterType="int" resultType="com.crowd.funding.myorder.domain.MyorderDTO">

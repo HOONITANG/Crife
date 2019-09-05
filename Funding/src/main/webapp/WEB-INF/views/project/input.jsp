@@ -275,11 +275,11 @@
 						            <div class="row"> <!--Start row-->
 										<p class="info-text">옵션 조건</p>
 										<div class="col-md-4">
-											<input type="radio" name="op_val" class="radio_ck" value="0">
+											<input type="radio" name="op_val" class="radio_ck input_js" value="0">
 											<span> 옵션입력이 필요없는 리워드입니다. </span>
 										</div>
 										<div class="col-md-4">
-											<input type="radio" name="op_val" class="radio_ck" value="1">
+											<input type="radio" name="op_val" class="radio_ck input_js" value="1">
 									        <span> 선택 옵션이 필요한 리워드입니다. (사이즈, 색상 등) </span>
 										</div>
 									</div>	

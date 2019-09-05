@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.myorder.common.JoinDATA;
+import com.crowd.funding.myorder.domain.paging.Criteria;
 import com.crowd.funding.order.domain.OrderDTO;
 import com.crowd.funding.project.model.ProjectDTO;
 import com.crowd.funding.reward.domain.RewardDTO;
@@ -22,8 +23,8 @@ public class MyorderDAOImpl implements MyorderDAO {
 	SqlSession sqlSession;
 	
 	@Override
-	public List<JoinDATA> orderList(int mem_idx) {
-		return sqlSession.selectList(NAMESPACE+".my_order_list", mem_idx);
+	public List<JoinDATA> orderList(Criteria criteria) {
+		return sqlSession.selectList(NAMESPACE+".my_order_list", criteria);
 	}
 
 	@Override
@@ -55,6 +56,9 @@ public class MyorderDAOImpl implements MyorderDAO {
 	public List<MyoptionDTO> optioninfo(int order_id) {
 		return sqlSession.selectList(NAMESPACE+".option_info", order_id);
 	}
-	
 
+	@Override
+	public int countOrder(int mem_idx) {
+		return sqlSession.selectOne(NAMESPACE+".countOrder", mem_idx);
+	}
 }

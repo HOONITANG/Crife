@@ -5,11 +5,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.crowd.funding.member.model.MemberDTO;
+import com.crowd.funding.myorder.domain.paging.Criteria;
+import com.crowd.funding.myorder.domain.paging.PageMaker;
 import com.crowd.funding.myorder.service.MyorderService;
 
 @Controller
@@ -21,11 +23,16 @@ public class MyorderController {
 	
 	@RequestMapping("/myorder/orderlist")
 	// mem_idx 받아야함.
-	public String myRewardList(Model model, HttpSession session) {
+	public String myRewardList(Model model, HttpSession session, @ModelAttribute("criteria") Criteria criteria ) {
 		// mem_idx에 해당하는 부분을 4에 넣어야한다.
 		MemberDTO memDTO = (MemberDTO) session.getAttribute("login");
 		int memIdx = memDTO.getMem_idx();
-		model.addAttribute("rewardList", myorderService.orderList(memIdx));
+		PageMaker pageMaker = new PageMaker();
+        pageMaker.setCriteria(criteria);
+        pageMaker.setTotalCount(myorderService.countOrder(memIdx));
+        criteria.setMem_idx(memIdx);
+		model.addAttribute("rewardList", myorderService.orderList(criteria));
+		model.addAttribute("pageMaker", pageMaker);
 		return "/myorder/orderlist";
 	}
 	@RequestMapping("/myorder/orderdetail/{order_id}")

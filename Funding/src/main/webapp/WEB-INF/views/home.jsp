@@ -24,7 +24,7 @@
 </head>
 <body>
 <%@ include file="include/navbar.jsp"%>
-	<h1>Hello world!</h1>회원 번호 : ${login.mem_idx} / 회원 권한 : ${login.mem_type}
+	
 	<hr>
 	<h2>프로젝트 리스트</h2>
 	<c:forEach items="${list}" var="dto">
@@ -87,15 +87,6 @@
 		</div>
 		</div>
 	</c:forEach>
-	<div class="card" style="width: 18rem;">
-	  <img src="images/ryan.jpg" class="card-img-top" alt="ryan">
-	  <div class="card-body">
-	    <h5 class="card-title">RYAN</h5>
-	    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-	    <a href="${path}/project/detail/${dto.pro_id}" class="btn btn-primary">펀딩 보러가기</a>
-	  </div>
-	</div>
-	
 	<hr>
 </body>
 </html>

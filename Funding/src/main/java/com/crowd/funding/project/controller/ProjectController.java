@@ -214,11 +214,13 @@ public class ProjectController {
 	    	for(int i = 0 ; i < rewardDTO.getList().size(); i++) {
 		    	int rewardId = rewardDTO.getList().get(i).getReward_id();
 		    	RewardDTO rewardList = rewardDTO.getList().get(i);
-		    	for (int j = 0; j < rewardList.getOptionlist().size(); j++) {
-		    		rewardList.getOptionlist().get(j).setReward_id(rewardId);
+		    	if(rewardList.getOptionlist().size() != 0) {
+			    	for (int j = 0; j < rewardList.getOptionlist().size(); j++) {
+			    		rewardList.getOptionlist().get(j).setReward_id(rewardId);
+			    	}
+			    	// 옵션 insert
+			    	projectService.insertOption(rewardList.getOptionlist());
 		    	}
-		    	// 옵션 insert
-		    	projectService.insertOption(rewardList.getOptionlist());
 			}
 	    }
 	    
