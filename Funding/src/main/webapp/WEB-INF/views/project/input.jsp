@@ -65,7 +65,7 @@
 	<form id="miri" name="miri" action="${path}/project/detail/${detail.pro_id}" method="post">
 		<input type="hidden" name="pro_id" value="${detail.pro_id}">
 		<div class="miri">
-			<button id="btn_miri" type="button" class="btn btn-primary">미리보기</button>
+			<button id="btn_miri" class="btn btn-primary">미리보기</button>
 		</div>
 	</form>
 	
@@ -466,22 +466,6 @@
 			alert("승인요청이 되었습니다. 2주 안에 처리됩니다");
 			document.getElementById('ok').submit();
 		});
-	});
-</script>
-<script type="text/javascript">
-	window.Parsley.addValidator('maxFileSize', {
-		  validateString: function(_value, maxSize, parsleyInstance) {
-		    if (!window.FormData) {
-		      alert('You are making all developpers in the world cringe. Upgrade your browser!');
-		      return true;
-		    }
-		    var files = parsleyInstance.$element[0].files;
-		    return files.length != 1  || files[0].size <= maxSize * 1024;
-		  },
-		  requirementType: 'integer',
-		  messages: {
-		    ko: '%s kb(3Mb) 이하 파일만 입력가능합니다'
-		  }
 	});
 </script>
 <!--리워드 삽입 스크립트  -->

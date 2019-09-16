@@ -37,6 +37,10 @@ public class KeepLoginInterceptor extends HandlerInterceptorAdapter {
 			if (memDTO != null) {
 				http.setAttribute("login", memDTO);
 				http.setAttribute("mem_idx", memDTO.getMem_idx());
+
+				if (maService.idx(memDTO.getMem_idx()) != 0) {
+					http.setAttribute("maker_idx", maService.makeridx(memDTO.getMem_idx()));
+				}
 			}
 		}
 

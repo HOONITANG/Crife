@@ -51,6 +51,7 @@
 
 </head>
 <body>
+<%@ include file="../include/navbar.jsp"%>
 <div class="container">
 	<div class="py-5 text-center">
 	    <h2>주문페이지 입니다.</h2>

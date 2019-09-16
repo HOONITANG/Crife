@@ -49,6 +49,7 @@
 
 </head>
 <body>
+<%@ include file="../include/navbar.jsp"%>
     <div class="container">
         <div class="py-5 text-center">
             <h2>주문페이지2 입니다.</h2>
@@ -447,7 +448,8 @@ function payment() {
 	var old_address=$('#old_address');
 	var new_address=$('#new_address');
 	var totalMoney = $('.totalMoney').text();
-	console.log(totalMoney);
+	totalMoney = totalMoney.replace(/,/gi,"");
+	totalMoney = totalMoney.replace("원","");
 	var formPay = $("form[role='form']");
 	/*배송지 정보*/
 	if(old_address.is(":checked")) {  

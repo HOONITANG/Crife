@@ -39,6 +39,15 @@
 		select *, TIMESTAMPDIFF(DAY, CURDATE(), `pro_end`) day from project where pro_id = #{pro_id}
 	</select>
 	
+	<select id ="pro_news" resultType="com.crowd.funding.community.model.NewsDTO">
+		select * from com_news where pro_id = #{pro_id} order by news_idx desc
+	</select>
+	
+	<insert id="insert_news">
+		INSERT INTO com_news (pro_id, maker_idx, news_title, news_content, news_date) 
+		VALUES (#{pro_id}, #{maker_idx}, #{news_title}, #{news_content}, now())
+	</insert>
+	
 	<select id ="pro_name" resultType="String">
 		select pro_name from project where pro_id = #{pro_id}
 	</select>

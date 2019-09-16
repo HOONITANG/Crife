@@ -78,16 +78,28 @@
         text-decoration: none;
     opacity: 0.8;
 }
+#div{
+	float: left;
+	width: 100%;
+	margin: 0;
+}
+.box-footer{
+	content: "";
+	clear: both;
+	display: flex;
+	justify-content : center;
+	align-items: center;
+}
 </style>
 </head>
 <body>
+<%@ include file="../include/navbar.jsp"%>
 <div class="container">
-	<h2>리워드 목록</h2>
+	<h2>리워드 결제목록</h2>
 	<br>
 	<c:forEach items="${rewardList}" var="rewardlist">
-		<div class="row">
-			<div class="col-md-4">
-			   <div class="card mb-4">
+			<div class="col-md-4" id="div">
+			   <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
 			      <img class="card-img-top" src="${path}/resources/images/${rewardlist.pro_imageURL}" width="290" height="180" alt="${rewardlist.pro_name}">
 			      <div class="card-body">
 			         <h5 class="card-title">${rewardlist.pro_name}</h5>
@@ -115,8 +127,7 @@
 			      </div>
 			   </div>
 			</div>
-		</div>
-    </c:forEach>
+    </c:forEach><p>
     <div class="box-footer">
 	    <form id="listPageForm">
 		    <input type="hidden" name="page" value="${pageMaker.criteria.page}">

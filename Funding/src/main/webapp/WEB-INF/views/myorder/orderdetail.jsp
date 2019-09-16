@@ -36,6 +36,7 @@
 </style>    
 </head>
 <body>
+<%@ include file="../include/navbar.jsp"%>
 <form>
 <div class="container">
     <div class="row">

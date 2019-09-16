@@ -56,7 +56,9 @@
 		<!-- 로그인하지 않은 사용자가 접근하면, login뷰로 이동	-->	
 		<interceptor>
 			<mapping path="/user/myinfo" />
-			<mapping path="/maker/maker" />
+			<mapping path="/project/check" />
+			<mapping path="/project/input" />
+			<mapping path="/project/my_project" />
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 		<!-- 사용자가 접속을 할 경우 자동로그인처리 -->

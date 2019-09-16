@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.crowd.funding.community.model.NewsDTO;
+import com.crowd.funding.community.service.CommentService;
+import com.crowd.funding.community.service.NewsService;
 import com.crowd.funding.maker.service.MakerService;
 import com.crowd.funding.member.model.MemberDTO;
 import com.crowd.funding.project.model.ProjectDTO;
@@ -39,8 +43,14 @@ public class ProjectController {
 	MakerService makerService;
 	
 	@Inject
-	RewardService rewardService;
+	CommentService commentService;
+	
+	@Inject
+	NewsService newsService;
 
+	@Inject
+	RewardService rewardService;
+	
 	// check.jsp로 이동
 	@RequestMapping("check")
 	public String check() {
@@ -79,7 +89,6 @@ public class ProjectController {
 			throws Exception {
 		model.addAttribute("detail", projectService.pro_detail(pro_id)); // 프로젝트 번호에 맞는 프로젝트 정보를 가져옴
 		model.addAttribute("maker_detail", makerService.makerinfo(dto.getPro_id()));
-		
 		return "project/input"; // input.jsp로 이동
 	}
 
@@ -98,7 +107,8 @@ public class ProjectController {
 			// 첨부 파일의 이름
 			filename = dto.getFile1().getOriginalFilename();
 			try {
-				String path = "C:\\Users\\hooni\\Desktop\\webPjt\\funding_spring\\.metadata\\.plugins"
+				// 이미지 파일 저장경로(본인 컴퓨터에 맞게 설정 workspace->.metadata->.plugins->??)
+				String path ="C:\\Users\\hooni\\Desktop\\webPjt\\funding_spring\\.metadata\\.plugins"
 						+ "\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Funding\\resources\\images\\";
 				// 디렉토리가 존재하지 않으면 생성
 				new File(path).mkdir();
@@ -162,8 +172,37 @@ public class ProjectController {
 	public ModelAndView detail(@PathVariable("pro_id") int pro_id, ModelAndView mav, Model model) throws Exception {
 		mav.setViewName("project/pro_detail");
 		mav.addObject("dto", projectService.pro_detail(pro_id));
+		mav.addObject("com_news", newsService.pro_news(pro_id));
+		mav.addObject("com_cmt", commentService.cmt_list(pro_id));
+		mav.addObject("sup_list", newsService.sup_list(pro_id));
+		mav.addObject("sup_count", newsService.support_count(pro_id));
 		model.addAttribute("maker_detail", makerService.makerinfo(pro_id));
 		return mav;
+	}
+	
+	// 프로젝트 새소식 등록폼 이동
+	@RequestMapping("news_write/{pro_id}")
+	public ModelAndView news_write (@PathVariable("pro_id") int pro_id, ModelAndView mav) throws Exception{
+		mav.setViewName("community/news_write");
+		mav.addObject("news_dto", projectService.pro_detail(pro_id));
+		return mav;
+	}
+	
+	// 프로젝트 새소식 등록하기
+	@RequestMapping("news_insert/{pro_id}&{maker_idx}")
+	public ModelAndView insert(@PathVariable int pro_id, @PathVariable int maker_idx, @ModelAttribute NewsDTO dto, ModelAndView mav) throws Exception {
+		/*
+		 * // 로그인한 사용자의 아이디 String writer = (String) session.getAttribute("mem_email");
+		 * dto.setWriter(writer);
+		 */
+		System.out.println("######################"+pro_id);
+		System.out.println("######################"+maker_idx);
+		mav.setViewName("redirect:/project/detail/{pro_id}");
+		mav.addObject("pro_id", pro_id);
+		mav.addObject("maker_idx", maker_idx);
+		// 레코드가 저장됨
+		newsService.insert_news(dto);
+		return mav; // 목록 갱신
 	}
 
 	// 상단 바 - 내 프로젝트 목록
@@ -179,7 +218,6 @@ public class ProjectController {
 	// 프로젝트 삭제, 메이커 삭제
 	@RequestMapping("my_delete")
 	public String my_delete(ProjectDTO dto) throws Exception {
-		projectService.delReward(dto.getPro_id());
 		projectService.my_delete(dto.getPro_id());
 		makerService.delete(dto.getMaker_idx());
 		return "redirect:/project/my_pro";
